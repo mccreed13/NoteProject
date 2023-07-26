@@ -19,7 +19,7 @@ public class NoteService {
         this.noteMapper = noteMapper;
     }
 
-    public List<com.goit.finalproject.note.plug.NoteDto> listAll() {
+    public List<NoteDto> listAll() {
         List<Note> result = noteRepository.findAll();
         return noteMapper.mapEntityToDto(result);
     }
