@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>My Notes</title>
+    <style>
+        body {
+            background-color: #000000;
+            color: #ffffff;
+        }
+        .button {
+            background-color: #ffffff;
+            border-radius: 5px;
+            color: black;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<h1>My Notes</h1>
+
+<div th:if="${#lists.isEmpty(notes)}">
+    <p>Sorry</p>
+    <button class="button" onclick="window.location.href='path_to_add_note_page'">Add</button>
+</div>
+
+<div th:unless="${#lists.isEmpty(notes)}">
+    <ul>
+        <li th:each="note : ${notes}">
+            <span th:text="${note.name}"></span>
+            <button class="button" th:onclick="'deleteNoteFunction('+${note.id}+');'">Del</button>
+            <button class="button" th:onclick="'shareNoteFunction('+${note.id}+');'">Shere</button>
+        </li>
+    </ul>
+    <button class="button" onclick="window.location.href='path_to_add_note_page'">Add</button>
+</div>
+
+<script>
+    function shareNoteFunction(noteId) {
+        alert('Note with ID: ' + noteId + ' shared!');
+    }
+
+    function deleteNoteFunction(noteId) {
+        // Тут може бути функція для видалення нотатки.
+        alert('Note with ID: ' + noteId + ' deleted!');
+    }
+</script>
+</body>
+</html>
