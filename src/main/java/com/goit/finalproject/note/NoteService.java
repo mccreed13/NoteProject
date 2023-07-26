@@ -1,12 +1,6 @@
 package com.goit.finalproject.note;
 
-import com.goit.finalproject.note.plug.Note;
-import com.goit.finalproject.note.plug.NoteDto;
-import com.goit.finalproject.note.plug.NoteMapper;
-import com.goit.finalproject.note.plug.NoteRepository;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class NoteService {
