@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Add New Note</title>
+  <style>
+        body {
+            background-color: #000000;
+            color: #ffffff;
+        }
+        .note-form {
+            display: flex;
+            flex-direction: column;
+            max-width: 300px;
+            margin: 0 auto;
+        }
+        .note-form input, .note-form textarea, .note-form button {
+            margin-bottom: 15px;
+        }
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+        }
+    </style>
+</head>
+<body>
+<h2>Add New Note</h2>
+
+<form th:action="@{/note/add}" method="post" class="note-form">
+  <label for="noteName">Note Name:</label>
+  <input type="text" id="noteName" name="name" required>
+
+  <label for="noteContent">Content:</label>
+  <textarea id="noteContent" name="content" rows="5" required></textarea>
+
+  <div class="buttons">
+    <button type="submit"> Save </button>
+    <button type="button" onclick="location.href='@{/note/share}';">Share</button>
+  </div>
+</form>
+</body>
+</html>
