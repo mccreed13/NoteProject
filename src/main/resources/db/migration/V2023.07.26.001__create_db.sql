@@ -8,7 +8,7 @@ create table if not exists role (
 create table if not exists person (
     id identity,
     username varchar_ignorecase(50),
-    passwoard varchar_ignorecase(250),
+    password varchar_ignorecase(250),
     role_id varchar(30) not null,
     primary key(id),
     foreign key (role_id) references role(id),

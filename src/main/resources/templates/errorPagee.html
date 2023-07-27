@@ -36,11 +36,11 @@
 </head>
 <body>
 <header>
-    <h2>Error 500</h2> <!-- Додано код помилки як приклад -->
+    <h2 th:text="'Error ' + ${errorCode}">Error</h2>
 </header>
 <main>
     <p>An error occurred. Please try again later</p>
-    <a href="/login" class="back">Back</a>
+    <a th:href="@{${redirectUrl}}" class="back">Back</a>
 </main>
 <footer>
 
