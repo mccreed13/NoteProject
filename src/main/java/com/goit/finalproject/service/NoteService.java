@@ -19,6 +19,7 @@ public class NoteService {
         this.noteMapper = noteMapper;
     }
 
+
     public List<NoteDto> listAll() {
         List<Note> result = noteRepository.findAll();
         return noteMapper.mapEntityToDto(result);
@@ -37,9 +38,16 @@ public class NoteService {
     public void update(Note note) {
         noteRepository.save(note);
     }
-
+    public Note findNoteById(Long id) {
+        return noteRepository.findById(id).orElse(null);
+    }
     public NoteDto getById(Long id) {
         return noteMapper.mapEntityToDto(noteRepository.findById(id)
                 .orElse(new Note()));
     }
+    public void updateFromDto(NoteDto noteDto) {
+        Note note = noteMapper.mapDtoToEntity(noteDto);
+        noteRepository.save(note);
+    }
+
 }
