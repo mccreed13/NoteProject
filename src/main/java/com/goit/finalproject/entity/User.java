@@ -4,10 +4,12 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.util.Collection;
+import java.util.List;
+
 @Entity
 @Data
 @Table(name = "person")
-public class Person {
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -23,4 +25,6 @@ public class Person {
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     private Collection<Role> roles;
+    @OneToMany(mappedBy = "person")
+    private List<Note> noteList;
 }

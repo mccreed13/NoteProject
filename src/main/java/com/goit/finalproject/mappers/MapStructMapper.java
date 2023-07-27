@@ -1,9 +1,9 @@
 package com.goit.finalproject.mappers;
 
 import com.goit.finalproject.dto.NoteDto;
-import com.goit.finalproject.dto.PersonDto;
+import com.goit.finalproject.dto.UserDto;
 import com.goit.finalproject.entity.Note;
-import com.goit.finalproject.entity.Person;
+import com.goit.finalproject.entity.User;
 import org.mapstruct.Mapper;
 import org.springframework.stereotype.Component;
 
@@ -15,5 +15,5 @@ public interface MapStructMapper {
     List<NoteDto> mapEntityToDto(List<Note> note);
     NoteDto mapEntityToDto(Note note);
     Note mapDtoToEntity(NoteDto noteDto);
-    PersonDto personToPersonDto(Person person);
+    UserDto userToUserDto(User user);
 }

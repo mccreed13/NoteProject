@@ -23,5 +23,8 @@ public class Note {
     @Column(name = "access")
     @Enumerated(EnumType.STRING)
     private Access access;
+    @ManyToOne
+    @JoinColumn(name = "person_id")
+    private User user;
 
 }
