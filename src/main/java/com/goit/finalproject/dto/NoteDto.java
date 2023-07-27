@@ -1,9 +1,10 @@
-package com.goit.finalproject.models;
+package com.goit.finalproject.dto;
 
-import com.goit.finalproject.enums.Access;
+import com.goit.finalproject.entity.Access;
 
 public record NoteDto(
         Long id,
+        Long userId,
         Long countNotes,
         String title,
         String content,
