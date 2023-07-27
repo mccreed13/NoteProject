@@ -1,13 +1,16 @@
 package com.goit.finalproject.entity;
 
-import org.springframework.security.core.GrantedAuthority;
+import jakarta.persistence.*;
+import lombok.Data;
 
-public enum Role implements GrantedAuthority {
-    USER,
-    ADMIN;
-
-    @Override
-    public String getAuthority() {
-        return this.name();
-    }
+@Entity
+@Data
+@Table(name = "roles")
+public class Role {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id;
+    @Column(name = "name")
+    private String name;
 }
