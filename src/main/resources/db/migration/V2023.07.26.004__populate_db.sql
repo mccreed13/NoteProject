@@ -3,8 +3,8 @@ values
 ('USER'),
 ('ADMIN');
 
-insert into person(role_id,username,passwoard)
-select r.id, 'admin', '$2a$04$MJ64V2eJXjaWdaUb/eD5vO4CVT2UJvZMJvr31hAq.xyMPmVCG1t9u'
+insert into person(role_id,username,password)
+select r.id, 'admin', 'super_secret_password'
 from role r where r.role='ADMIN';
 
 insert into person_role(person_id,role_id)
