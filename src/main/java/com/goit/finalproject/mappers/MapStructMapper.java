@@ -15,5 +15,5 @@ public interface MapStructMapper {
     List<NoteDto> mapEntityToDto(List<Note> note);
     NoteDto mapEntityToDto(Note note);
     Note mapDtoToEntity(NoteDto noteDto);
-    UserDto userToUserDto(User user);
+    UserDto userToUserDto(User person);
 }
