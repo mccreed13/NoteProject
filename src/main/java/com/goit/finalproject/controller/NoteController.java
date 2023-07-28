@@ -1,10 +1,11 @@
 package com.goit.finalproject.controller;
 
+import com.goit.finalproject.entity.Access;
 import com.goit.finalproject.entity.Note;
 import com.goit.finalproject.dto.NoteDto;
 import com.goit.finalproject.service.NoteService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -13,47 +14,61 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/note")
+@RequiredArgsConstructor
 public class NoteController {
-    //  сервіс замість репозиторію?
     private final NoteService noteService;
 
-    @Autowired
-    public NoteController(NoteService noteService) {
-        this.noteService = noteService;
+    @GetMapping(value = "/list")
+    public ModelAndView getListNotes() {
+        ModelAndView result = new ModelAndView("noteslist");
+        List<NoteDto> notes = noteService.listAll();
+        result.addObject("notes", notes);
+        return result;
     }
 
-    @PostMapping("/add")
-    public ModelAndView addNote(@ModelAttribute NoteDto noteDto) {
-        noteService.add(noteDto);
-        return new ModelAndView("redirect:/note/list");
-    }
-    @GetMapping("/list")
-    public ModelAndView listNotes() {
-        List<NoteDto> notes = noteService.listAll(); // Використовуйте listAll() замість getAllNotes()
-        ModelAndView modelAndView = new ModelAndView("notesList");
-        modelAndView.addObject("notes", notes);
-        return modelAndView;
-    }
-    @GetMapping("/edit")
-    public ModelAndView editNote(@RequestParam("noteId") Long noteId) {
-        Note note = noteService.findNoteById(noteId);
-        ModelAndView modelAndView = new ModelAndView("edit");
-        modelAndView.addObject("note", note);
-        return modelAndView;
-    }
-    @PostMapping("/update")
-    public ModelAndView updateNote(@ModelAttribute NoteDto noteDto) {
-        noteService.updateFromDto(noteDto);
-        return new ModelAndView("redirect:/note/list");
+    @GetMapping(value = "/create")
+    public ModelAndView getEditPage(){
+        return new ModelAndView("noteCreate");
     }
 
-    @GetMapping("/delete/{id}")
-    public ModelAndView deleteNote(@PathVariable Long id) {
-        try {
-            noteService.deleteById(id);
-        } catch (EmptyResultDataAccessException e) {
+    @PostMapping(value = "/create")
+    public String createNewNote(HttpServletRequest request){
+        String title = request.getParameter("title");
+        String content = request.getParameter("content");
+        Access access = Access.valueOf(request.getParameter("access"));
+        Long userId = Long.valueOf(request.getParameter("userId"));
+//        NoteDto noteDto = new NoteDto(title, content, access, userId);
+//        noteService.add(noteDto);
+        return "redirect:/note/list";
+    }
+
+    @GetMapping(value = "/edit/{id}")
+    public ModelAndView getEditPage(@PathVariable Long id){
+        ModelAndView result = new ModelAndView("noteEdit");
+        NoteDto noteDto = noteService.getById(id);
+        result.addObject("note", noteDto);
+        return result;
+    }
+
+    @PostMapping(value = "/edit/{id}")
+    public String editNote(@PathVariable Long id, HttpServletRequest request){
+        String title = request.getParameter("title");
+        String content = request.getParameter("content");
+        Access access = Access.valueOf(request.getParameter("access"));
+        noteService.update(Note.builder().id(id).title(title).content(content).access(access).build());
+        return "redirect:/note/list";
+    }
+
+    @GetMapping(value = "/share/{id}")
+    public ModelAndView getSharePage(@PathVariable Long id) {
+        NoteDto noteDto = noteService.getById(id);
+        if (noteDto.access() == Access.PUBLIC) {
+            ModelAndView result = new ModelAndView("publicNote");
+            result.addObject("note", noteDto);
+            return result;
+        } else {
+            return new ModelAndView("publicErrorNote");
         }
-        return new ModelAndView("redirect:/path_to_note_listing_page");
     }
 }
 
