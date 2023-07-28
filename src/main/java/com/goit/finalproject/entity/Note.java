@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Length;
 
 @Entity
 @Data
@@ -13,18 +14,20 @@ import lombok.NoArgsConstructor;
 @Builder
 @Table(name = "note")
 public class Note {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "title")
+
+    @Length(max = 200, message = "title too big!")
     private String title;
-    @Column(name = "content")
+
     private String content;
-    @Column(name = "access")
+
     @Enumerated(EnumType.STRING)
     private Access access;
-    @ManyToOne
-    @JoinColumn(name = "person_id")
-    private User user;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 }

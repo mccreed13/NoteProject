@@ -1,16 +1,31 @@
 package com.goit.finalproject.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+
+import java.util.List;
 
 @Entity
 @Data
-@Table(name = "roles")
-public class Role {
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@Table(name = "role")
+@ToString(exclude = {"userList"})
+public class Role implements GrantedAuthority {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private Long id;
-    @Column(name = "name")
-    private String name;
+
+    private String role;
+
+    @ManyToMany(mappedBy = "role", cascade = CascadeType.PERSIST)
+    private List<User> userList;
+
+    @Override
+    public String getAuthority() {
+        return role;
+    }
 }

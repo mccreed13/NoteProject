@@ -4,21 +4,17 @@ import com.goit.finalproject.dto.NoteDto;
 import com.goit.finalproject.entity.Note;
 import com.goit.finalproject.mappers.MapStructMapper;
 import com.goit.finalproject.repository.NoteRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class NoteService {
 
     private final NoteRepository noteRepository;
     private final MapStructMapper noteMapper;
-
-    public NoteService(NoteRepository noteRepository, MapStructMapper noteMapper) {
-        this.noteRepository = noteRepository;
-        this.noteMapper = noteMapper;
-    }
-
 
     public List<NoteDto> listAll() {
         List<Note> result = noteRepository.findAll();
