@@ -3,13 +3,17 @@ package com.goit.finalproject.controller;
 import com.goit.finalproject.entity.Access;
 import com.goit.finalproject.entity.Note;
 import com.goit.finalproject.dto.NoteDto;
+import com.goit.finalproject.entity.User;
+import com.goit.finalproject.repository.UserRepository;
 import com.goit.finalproject.service.NoteService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.security.Principal;
 import java.util.List;
 
 @Controller
@@ -17,6 +21,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class NoteController {
     private final NoteService noteService;
+    private final UserRepository userRepository;
 
     @GetMapping(value = "/list")
     public ModelAndView getListNotes() {
@@ -32,11 +37,21 @@ public class NoteController {
     }
 
     @PostMapping(value = "/create")
-    public String createNewNote(HttpServletRequest request){
+    //TODO added Note note, BindingResult result as parameters
+    public String createNewNote(NoteDto noteDto, BindingResult result, User user, HttpServletRequest request){
+        User userResult = userRepository.findUserByUsername(request.getRemoteUser());
+        NoteDto newNoteDto = new NoteDto();
+        newNoteDto.setTitle(noteDto.getTitle());
+        newNoteDto.setContent(noteDto.getContent());
+        newNoteDto.setAccess(Access.PRIVATE);
+        noteService.add(newNoteDto, userResult.getId());
+
+/*
         String title = request.getParameter("title");
         String content = request.getParameter("content");
         Access access = Access.valueOf(request.getParameter("access"));
         Long userId = Long.valueOf(request.getParameter("userId"));
+*/
 //        NoteDto noteDto = new NoteDto(title, content, access, userId);
 //        noteService.add(noteDto);
         return "redirect:/note/list";

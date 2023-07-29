@@ -2,7 +2,6 @@ package com.goit.finalproject.service;
 
 import com.goit.finalproject.dto.NoteDto;
 import com.goit.finalproject.entity.Note;
-import com.goit.finalproject.mappers.MapStructMapper;
 import com.goit.finalproject.repository.NoteRepository;
 import com.goit.finalproject.service.plug.NoteMapper;
 import lombok.RequiredArgsConstructor;
@@ -22,8 +21,9 @@ public class NoteService {
         return noteMapper.mapEntityToDto(result);
     }
 
-    public NoteDto add(NoteDto noteDto) { //TODO нам не потрібно вертати NoteDto
+    public NoteDto add(NoteDto noteDto, Long userId) { //TODO нам не потрібно вертати NoteDto
         Note note = noteMapper.mapDtoToEntity(noteDto);
+        note.setUser(noteRepository.findById(userId).orElseThrow().getUser());
         noteRepository.save(note);
         return noteDto;
     }
