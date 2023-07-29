@@ -4,7 +4,7 @@ values
 ('ADMIN');
 
 insert into "user"(role_id,username,password)
-select r.id, 'admin', '$2a$10$pwEm25k7EQ42db6pExjdxuUOWCBKX3WS0hDsQkGcGKELRPu.mkNdS'
+select r.id, 'admin', '$2a$10$CnGe7GA.rpCYmj0trqMKVe30AmkVB3jpmsNjgBG1Po1lPvL201msy'
 from role r where r.role='ADMIN';
 
 insert into user_role(user_id,role_id)
