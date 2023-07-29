@@ -1,6 +1,6 @@
-package com.goit.finalproject.dto;
+package com.goit.finalproject.note;
 
-import com.goit.finalproject.entity.Access;
+import com.goit.finalproject.access.Access;
 
 public record NoteDto(
 //        Long id,

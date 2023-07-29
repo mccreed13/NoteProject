@@ -1,4 +1,4 @@
-package com.goit.finalproject.entity;
+package com.goit.finalproject.access;
 
 public enum Access {
     PUBLIC,

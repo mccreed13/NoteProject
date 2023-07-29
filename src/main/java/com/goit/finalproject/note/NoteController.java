@@ -1,9 +1,6 @@
-package com.goit.finalproject.controller;
+package com.goit.finalproject.note;
 
-import com.goit.finalproject.entity.Access;
-import com.goit.finalproject.entity.Note;
-import com.goit.finalproject.dto.NoteDto;
-import com.goit.finalproject.service.NoteService;
+import com.goit.finalproject.access.Access;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;

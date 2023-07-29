@@ -1,9 +1,5 @@
-package com.goit.finalproject.service;
+package com.goit.finalproject.note;
 
-import com.goit.finalproject.dto.NoteDto;
-import com.goit.finalproject.entity.Note;
-import com.goit.finalproject.mappers.MapStructMapper;
-import com.goit.finalproject.repository.NoteRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

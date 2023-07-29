@@ -1,5 +1,7 @@
-package com.goit.finalproject.entity;
+package com.goit.finalproject.user;
 
+import com.goit.finalproject.role.Role;
+import com.goit.finalproject.note.Note;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.validator.constraints.Length;

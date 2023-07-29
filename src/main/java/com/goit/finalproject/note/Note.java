@@ -1,5 +1,7 @@
-package com.goit.finalproject.entity;
+package com.goit.finalproject.note;
 
+import com.goit.finalproject.access.Access;
+import com.goit.finalproject.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

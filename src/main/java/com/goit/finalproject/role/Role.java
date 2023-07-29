@@ -1,5 +1,6 @@
-package com.goit.finalproject.entity;
+package com.goit.finalproject.role;
 
+import com.goit.finalproject.user.User;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;

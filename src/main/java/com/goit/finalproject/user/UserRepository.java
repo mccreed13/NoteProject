@@ -1,6 +1,5 @@
-package com.goit.finalproject.repository;
+package com.goit.finalproject.user;
 
-import com.goit.finalproject.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

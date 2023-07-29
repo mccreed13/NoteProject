@@ -1,5 +1,4 @@
-package com.goit.finalproject.repository;
-import com.goit.finalproject.entity.Note;
+package com.goit.finalproject.note;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

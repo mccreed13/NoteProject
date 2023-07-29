@@ -1,4 +1,4 @@
-package com.goit.finalproject.dto;
+package com.goit.finalproject.user;
 
 public class UserDto {
     private Long id;
