@@ -62,7 +62,7 @@ public class NoteController {
     @GetMapping(value = "/share/{id}")
     public ModelAndView getSharePage(@PathVariable Long id) {
         NoteDto noteDto = noteService.getById(id);
-        if (noteDto.access() == Access.PUBLIC) {
+        if (noteDto.getAccess() == Access.PUBLIC) { //TODO changed on setAccess (not equals?)
             ModelAndView result = new ModelAndView("publicNote");
             result.addObject("note", noteDto);
             return result;
