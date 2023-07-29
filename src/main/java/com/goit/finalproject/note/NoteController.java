@@ -14,6 +14,12 @@ import java.util.List;
 @RequiredArgsConstructor
 public class NoteController {
     private final NoteService noteService;
+    private static final String REDIRECT = "redirect:/note/list";
+
+    @GetMapping(value = "/")
+    public String getNotes() {
+        return REDIRECT;
+    }
 
     @GetMapping(value = "/list")
     public ModelAndView getListNotes() {
@@ -36,7 +42,7 @@ public class NoteController {
         Long userId = Long.valueOf(request.getParameter("userId"));
 //        NoteDto noteDto = new NoteDto(title, content, access, userId);
 //        noteService.add(noteDto);
-        return "redirect:/note/list";
+        return REDIRECT;
     }
 
     @GetMapping(value = "/edit/{id}")
@@ -49,11 +55,8 @@ public class NoteController {
 
     @PostMapping(value = "/edit/{id}")
     public String editNote(@PathVariable Long id, HttpServletRequest request){
-        String title = request.getParameter("title");
-        String content = request.getParameter("content");
-        Access access = Access.valueOf(request.getParameter("access"));
-        noteService.update(Note.builder().id(id).title(title).content(content).access(access).build());
-        return "redirect:/note/list";
+        checkAndUpdateNote(id, request);
+        return REDIRECT;
     }
 
     @GetMapping(value = "/share/{id}")
@@ -66,6 +69,21 @@ public class NoteController {
         } else {
             return new ModelAndView("publicErrorNote");
         }
+    }
+
+    private void checkAndUpdateNote(Long id, HttpServletRequest request) {
+        //TODO get userId and replace method to UserService
+        NoteDto noteDto = noteService.getById(id);
+        String title = request.getParameter("title");
+        if (title==null || title.isEmpty()) {
+            title = noteDto.title();
+        }
+        String content = request.getParameter("content");
+        if (content == null || content.isEmpty()) {
+            content = noteDto.content();
+        }
+        Access access = Access.valueOf(request.getParameter("access"));
+        noteService.update(Note.builder().id(id).title(title).content(content).access(access).build());
     }
 }
 
