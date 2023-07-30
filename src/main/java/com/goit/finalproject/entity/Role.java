@@ -21,7 +21,7 @@ public class Role implements GrantedAuthority {
 
     private String role;
 
-    @ManyToMany(mappedBy = "role", cascade = CascadeType.PERSIST)
+    @ManyToMany(mappedBy = "roles", cascade = CascadeType.PERSIST)
     private List<User> userList;
 
     @Override

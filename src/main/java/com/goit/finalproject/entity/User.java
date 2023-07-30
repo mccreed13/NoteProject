@@ -38,14 +38,14 @@ public class User implements UserDetails {
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
 //    private Collection<Role> role; //TODO changed on Set<Role>
-    private Set<Role> role;
+    private Set<Role> roles;
 
     @OneToMany(mappedBy = "user")
     private List<Note> note;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return role;
+        return roles;
     }
 
     @Override
