@@ -60,11 +60,12 @@ public class NoteController {
     }
 
     @PostMapping(value = "/edit/{id}")
-    public String editNote(@PathVariable Long id, HttpServletRequest request){
+    public String editNote(@PathVariable Long id, Long user_id, HttpServletRequest request){
         String title = request.getParameter("title");
         String content = request.getParameter("content");
         Access access = Access.valueOf(request.getParameter("access"));
 //        Access access = Access.valueOf("PRIVATE");
+        //TODO to finish at morning user_id(user_id)
         noteService.update(Note.builder().id(id).title(title).content(content).access(access).build());
         return "redirect:/note/list";
     }

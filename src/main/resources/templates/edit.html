@@ -46,12 +46,14 @@
     <label for="noteContent">Content:</label>
     <textarea id="noteContent" th:field="*{content}" rows="5" required></textarea>
 
-    <label for="noteAccess">Access:</label>
-    <input
-            type="text"
-            th:field="*{access}" required
-            id="noteAccess"
-    >
+    <label> Access:
+        <select name="noteAccess">
+            <option th:each="access : ${T(com.goit.finalproject.entity.Access).values()}"
+                    th:value="${access}" th:text="${access}"></option>
+        </select>
+    </label>
+
+    <input type="hidden" th:field="*{user_id}" id = "user_id">
 
     <div class="buttons">
         <button type="submit"> Save Changes </button>
