@@ -22,4 +22,5 @@ public class NoteDto {
     String title;
     String content;
     Access access;
+    Long user_id;
 }

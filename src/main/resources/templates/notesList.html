@@ -46,7 +46,11 @@
 <div th:unless="${#lists.isEmpty(notes)}">
     <ul>
         <li th:each="note : ${notes}">
-            <span th:text="${note.name}"></span>
+<!--            //TODO change name on title-->
+            <span th:text="${note.title}"></span>
+            <span th:text="${note.content}"></span>
+            <span th:text="${note.access}"></span>
+            <span th:text="${note.user_id}"></span>
             <button class="button" th:onclick="'deleteNoteFunction('+${note.id}+');'">Delete</button>
             <button class="button" th:onclick="'editNoteFunction('+${note.id}+');'">Edit</button>
             <button class="button" th:onclick="'shareNoteFunction('+${note.id}+');'">Share</button>
@@ -58,7 +62,9 @@
 
 <script>
         function editNoteFunction(noteId) {
-            window.location.href = '/edit.html?noteId=' + noteId;
+            // TODO //edit.html?noteId= chabged on
+            // window.location.href = '/edit.html?noteId=' + noteId;
+            window.location.href = '/edit/' + noteId;
         }
 
         function shareNoteFunction(noteId) {
@@ -67,8 +73,10 @@
 
         function deleteNoteFunction(noteId) {
             if (confirm('Are you sure you want to delete this note?')) {
-                fetch(`/note/${noteId}`, {
-                    method: 'DELETE'
+                // TODO changed /note/ on /note/delete/
+                fetch(`/note/delete/${noteId}`, {
+                    // TODO changed DELETE on GET
+                    method: 'GET'
                 }).then(response => {
                     if (response.ok) {
                         alert('Note deleted successfully!');

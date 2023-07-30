@@ -5,7 +5,9 @@ import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
 
 @Data //TODO added @Data
 public class UserDto implements UserDetails { //TODO added implement UserDetails
@@ -14,27 +16,27 @@ public class UserDto implements UserDetails { //TODO added implement UserDetails
     private String password;
 
     @Override
-    public Collection<Role> getAuthorities() {
-        return null;
+    public Collection<Role> getAuthorities() { //TODO was null before
+        return new HashSet<Role>(Arrays.asList(new Role()));
     }
 
     @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return false;
+        return true;
     }
 }

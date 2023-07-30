@@ -8,6 +8,8 @@ import com.goit.finalproject.repository.UserRepository;
 import com.goit.finalproject.service.NoteService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -39,21 +41,13 @@ public class NoteController {
     @PostMapping(value = "/create")
     //TODO added Note note, BindingResult result as parameters
     public String createNewNote(NoteDto noteDto, BindingResult result, User user, HttpServletRequest request){
-        User userResult = userRepository.findUserByUsername(request.getRemoteUser());
         NoteDto newNoteDto = new NoteDto();
         newNoteDto.setTitle(noteDto.getTitle());
         newNoteDto.setContent(noteDto.getContent());
         newNoteDto.setAccess(Access.PRIVATE);
-        noteService.add(newNoteDto, userResult.getId());
-
-/*
-        String title = request.getParameter("title");
-        String content = request.getParameter("content");
-        Access access = Access.valueOf(request.getParameter("access"));
-        Long userId = Long.valueOf(request.getParameter("userId"));
-*/
-//        NoteDto noteDto = new NoteDto(title, content, access, userId);
-//        noteService.add(noteDto);
+        Long userId = userRepository.findUserByUsername(SecurityContextHolder.getContext()
+                .getAuthentication().getName()).getId();
+        noteService.add(newNoteDto, userId);
         return "redirect:/note/list";
     }
 
@@ -84,6 +78,12 @@ public class NoteController {
         } else {
             return new ModelAndView("publicErrorNote");
         }
+    }
+//TODO added delete method
+    @GetMapping("/delete/{id}")
+    public String deleteNote(@PathVariable("id") long id) {
+        noteService.deleteById(id);
+        return "redirect:/note/list";
     }
 }
 

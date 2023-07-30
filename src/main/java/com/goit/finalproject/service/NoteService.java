@@ -21,11 +21,12 @@ public class NoteService {
         return noteMapper.mapEntityToDto(result);
     }
 
-    public NoteDto add(NoteDto noteDto, Long userId) { //TODO нам не потрібно вертати NoteDto
+    public void add(NoteDto noteDto, Long userId) { //TODO нам не потрібно вертати NoteDto
+        noteDto.setUser_id(userId);
         Note note = noteMapper.mapDtoToEntity(noteDto);
-        note.setUser(noteRepository.findById(userId).orElseThrow().getUser());
+//        note.setUser(noteRepository.findById(userId).orElseThrow().getUser());
+
         noteRepository.save(note);
-        return noteDto;
     }
 
     public void deleteById(Long id) {
