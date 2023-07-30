@@ -25,21 +25,37 @@
 <body>
 <h2>Edit Note</h2>
 
-<form th:action="@{/note/update}" method="post" class="note-form">
-    <input type="hidden" th:field="*{id}">
+<form th:action="@{/note/edit/{id}(id=${note.id})}"
+      class="note-form"
+      method="post"
+      th:object="${note}"
+>
+    <input type="hidden" th:field="*{id}" id = "id">
 
-    <label for="noteName">Note Name:</label>
-    <input type="text" id="noteName" th:field="*{title}" required>
+    <label for="noteTitle">Title:</label>
+    <input
+            type="text"
+            th:field="*{title}" required
+            id="noteTitle"
+    >
+    <span
+            th:if="${#fields.hasErrors('title')}"
+            th:errors="*{title}"
+    ></span>
 
     <label for="noteContent">Content:</label>
     <textarea id="noteContent" th:field="*{content}" rows="5" required></textarea>
 
-<!--    <label for="noteContent">Content:</label>-->
-<!--    <textarea id="noteContent" th:field="*{}" rows="5" required></textarea>-->
+    <label for="noteAccess">Access:</label>
+    <input
+            type="text"
+            th:field="*{access}" required
+            id="noteAccess"
+    >
 
     <div class="buttons">
         <button type="submit"> Save Changes </button>
-        <button type="button" onclick="location.href='@{/note/list}';">Cancel</button>
+        <button type="button" onclick="location.href='/note/list';">Cancel</button>
     </div>
 </form>
 </body>

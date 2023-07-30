@@ -25,7 +25,7 @@ public class NoteService {
 
     public List<NoteDto> listAll() {
         List<Note> allNotes = noteRepository.findAll();
-        allNotes.removeIf(note -> Objects.equals(note.getUser().getId(), userService.getUserId()));
+        allNotes.removeIf(note -> !Objects.equals(note.getUser().getId(), userService.getUserId()));
         return noteMapper.mapEntityToDto(allNotes);
     }
 

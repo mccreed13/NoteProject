@@ -53,7 +53,7 @@ public class NoteController {
 
     @GetMapping(value = "/edit/{id}")
     public ModelAndView getEditPage(@PathVariable Long id){
-        ModelAndView result = new ModelAndView("noteEdit");
+        ModelAndView result = new ModelAndView("edit"); //TODO change on edit
         NoteDto noteDto = noteService.getById(id);
         result.addObject("note", noteDto);
         return result;
@@ -64,6 +64,7 @@ public class NoteController {
         String title = request.getParameter("title");
         String content = request.getParameter("content");
         Access access = Access.valueOf(request.getParameter("access"));
+//        Access access = Access.valueOf("PRIVATE");
         noteService.update(Note.builder().id(id).title(title).content(content).access(access).build());
         return "redirect:/note/list";
     }
