@@ -26,6 +26,6 @@ public class Note {
     private Access access;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false) //TODO added nullable=false
+    @JoinColumn(name = "user_id") //TODO added nullable=false (, nullable = false)
     private User user;
 }

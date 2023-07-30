@@ -40,7 +40,7 @@ public class NoteController {
 
     @PostMapping(value = "/create")
     //TODO added Note note, BindingResult result as parameters
-    public String createNewNote(NoteDto noteDto, BindingResult result, User user, HttpServletRequest request){
+    public String createNewNote(NoteDto noteDto, HttpServletRequest request){
         NoteDto newNoteDto = new NoteDto();
         newNoteDto.setTitle(noteDto.getTitle());
         newNoteDto.setContent(noteDto.getContent());

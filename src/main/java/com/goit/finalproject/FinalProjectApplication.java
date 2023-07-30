@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfi
 import org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration;
 
 //@SpringBootApplication(exclude= {UserDetailsServiceAutoConfiguration.class})
+//@SpringBootApplication(exclude = {SecurityAutoConfiguration.class})
 @SpringBootApplication
 public class FinalProjectApplication {
     public static void main(String[] args) {
