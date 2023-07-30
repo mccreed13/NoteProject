@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -21,13 +20,39 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 @EnableMethodSecurity
 @RequiredArgsConstructor
-public class SecurityConfiguration {
+public class SecurityConfiguration{
     private final UserService userService;
 
     @Autowired
-    public void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userService);
-    }
+    public void configure(HttpSecurity http) throws Exception {
+        http
+
+                .httpBasic(Customizer.withDefaults())
+                .csrf(Customizer.withDefaults())
+                .authorizeHttpRequests(authorize -> {
+                    authorize.requestMatchers(
+                                    "/h2-console/**",
+                                    "/note/list",
+                                    "/note/create",
+                                    "/note/edit/**"
+                            )
+                            .fullyAuthenticated()
+                            .requestMatchers("/register")
+                            .permitAll()
+                            .anyRequest()
+                            .authenticated();
+                })
+                .headers(headers -> headers
+                        .frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin)
+                )
+                .csrf(CsrfConfigurer::disable)
+                .formLogin(login ->
+                        login.loginPage("/login")
+                                .defaultSuccessUrl("/note/list")
+                                .permitAll()
+                )
+                .logout(LogoutConfigurer::permitAll)
+                .build();    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -39,9 +64,10 @@ public class SecurityConfiguration {
                                     "/h2-console/**",
                                     "/note/list",
                                     "/note/create",
-                                    "/note/edit/**",
-                                    "/note/share/**"
+                                    "/note/edit/**"
                             )
+                            .fullyAuthenticated()
+                            .requestMatchers("/register")
                             .permitAll()
                             .anyRequest()
                             .authenticated();

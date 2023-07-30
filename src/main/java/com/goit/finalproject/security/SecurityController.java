@@ -3,17 +3,24 @@ package com.goit.finalproject.security;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-@RequestMapping("/login")
 @RequiredArgsConstructor
-public class LoginController {
+public class SecurityController {
 
-    @GetMapping
+    @GetMapping("/login")
     public ModelAndView getLoginPage() {
         return new ModelAndView("/login");
     }
+
+    @GetMapping("/register")
+    public ModelAndView getRegisterPage() {
+        return new ModelAndView("/registration");
+    }
+
+//    @PostMapping("/register")
+//    public
+
 
 }
