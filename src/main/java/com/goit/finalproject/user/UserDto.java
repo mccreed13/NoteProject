@@ -1,17 +1,16 @@
 package com.goit.finalproject.user;
 
-import com.goit.finalproject.entity.Role;
+import com.goit.finalproject.role.Role;
 import lombok.Data;
 import org.springframework.security.core.userdetails.UserDetails;
-
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 
-@Data //TODO added @Data
-public class UserDto implements UserDetails { //TODO added implement UserDetails
+@Data
+public class UserDto implements UserDetails {
     private Long id;
-    private String username; //TODO login was changed on username
+    private String username;
     private String password;
 
     @Override

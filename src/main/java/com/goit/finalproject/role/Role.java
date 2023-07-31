@@ -8,7 +8,8 @@ import org.springframework.security.core.GrantedAuthority;
 import java.util.List;
 
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder

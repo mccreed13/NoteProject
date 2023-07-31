@@ -62,7 +62,7 @@ public class NoteController {
     @GetMapping(value = "/share/{id}")
     public ModelAndView getSharePage(@PathVariable Long id) {
         NoteDto noteDto = noteService.getById(id);
-        if (noteDto.access() == Access.PUBLIC) {
+        if (noteDto.getAccess() == Access.PUBLIC) {
             ModelAndView result = new ModelAndView("publicNote");
             result.addObject("note", noteDto);
             return result;
@@ -76,11 +76,11 @@ public class NoteController {
         NoteDto noteDto = noteService.getById(id);
         String title = request.getParameter("title");
         if (title==null || title.isEmpty()) {
-            title = noteDto.title();
+            title = noteDto.getTitle();
         }
         String content = request.getParameter("content");
         if (content == null || content.isEmpty()) {
-            content = noteDto.content();
+            content = noteDto.getContent();
         }
         Access access = Access.valueOf(request.getParameter("access"));
         noteService.update(Note.builder().id(id).title(title).content(content).access(access).build());

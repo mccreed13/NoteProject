@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
-@Setter //TODO Data changed on Setter and Getter
+@Setter
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -34,14 +34,13 @@ public class User implements UserDetails {
     @Length(max = 250, message = "Password too big!")
     private String password;
 
-//    @NotNull
+    @NotNull
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_role",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
-//    private Collection<Role> role; //TODO changed on Set<Role>
     private Set<Role> roles;
 
     @OneToMany(mappedBy = "user")

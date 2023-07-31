@@ -1,12 +1,17 @@
 package com.goit.finalproject.note;
 
 import com.goit.finalproject.access.Access;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
-public record NoteDto(
-//        Long id,
-        Long userId,
-//        Long countNotes,
-        String title,
-        String content,
-        Access access
-) { }
+@ToString
+@Getter
+@Setter
+public class NoteDto {
+    Long id;
+    String title;
+    String content;
+    Access access;
+    Long user_id;
+}
