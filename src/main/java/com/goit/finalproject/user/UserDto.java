@@ -1,4 +1,4 @@
-package com.goit.finalproject.dto;
+package com.goit.finalproject.user;
 
 import com.goit.finalproject.entity.Role;
 import lombok.Data;

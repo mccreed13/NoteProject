@@ -1,5 +1,7 @@
-package com.goit.finalproject.entity;
+package com.goit.finalproject.user;
 
+import com.goit.finalproject.role.Role;
+import com.goit.finalproject.note.Note;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -69,4 +71,5 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
 }

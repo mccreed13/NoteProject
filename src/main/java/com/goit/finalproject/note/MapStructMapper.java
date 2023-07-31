@@ -1,9 +1,7 @@
-package com.goit.finalproject.mappers;
+package com.goit.finalproject.note;
 
-import com.goit.finalproject.dto.NoteDto;
-import com.goit.finalproject.dto.UserDto;
-import com.goit.finalproject.entity.Note;
-import com.goit.finalproject.entity.User;
+import com.goit.finalproject.user.UserDto;
+import com.goit.finalproject.user.User;
 import org.mapstruct.Mapper;
 import org.springframework.stereotype.Component;
 
