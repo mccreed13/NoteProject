@@ -47,9 +47,12 @@
     <textarea id="noteContent" th:field="*{content}" rows="5" required></textarea>
 
     <label> Access:
-        <select name="noteAccess">
-            <option th:each="access : ${T(com.goit.finalproject.entity.Access).values()}"
-                    th:value="${access}" th:text="${access}"></option>
+        <select name="access">
+            <option th:each="noteAccess : ${T(com.goit.finalproject.entity.Access).values()}"
+                    th:value="${noteAccess}"
+                    th:text="${noteAccess}"
+            >
+            </option>
         </select>
     </label>
 

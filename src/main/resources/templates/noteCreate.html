@@ -25,12 +25,25 @@
 <body>
 <h2>Add New Note</h2>
 <!--TODO changed on /note/create-->
-<form th:action="@{/note/create}" method="post" class="note-form">
-  <label for="noteName">Note Name:</label>
+<form th:action="@{/note/create}"
+      th:object="${noteDto}"
+      method="post" class="note-form"
+>
+  <label for="noteName">Title:</label>
   <input type="text" id="noteName" name="title" required>
 
   <label for="noteContent">Content:</label>
   <textarea id="noteContent" name="content" rows="5" required></textarea>
+
+  <label> Access:
+    <select name="access">
+      <option th:each="noteAccess : ${T(com.goit.finalproject.entity.Access).values()}"
+              th:value="${noteAccess}"
+              th:text="${noteAccess}"
+      >
+      </option>
+    </select>
+  </label>
 
   <div class="buttons">
     <button type="submit"> Save </button>

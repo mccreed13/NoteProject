@@ -6,6 +6,7 @@ import com.goit.finalproject.dto.NoteDto;
 import com.goit.finalproject.entity.User;
 import com.goit.finalproject.repository.UserRepository;
 import com.goit.finalproject.service.NoteService;
+import com.goit.finalproject.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.annotation.Secured;
@@ -23,7 +24,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class NoteController {
     private final NoteService noteService;
-    private final UserRepository userRepository;
+    private final UserService userService;
 
     @GetMapping(value = "/list")
     public ModelAndView getListNotes() {
@@ -34,20 +35,16 @@ public class NoteController {
     }
 
     @GetMapping(value = "/create")
-    public ModelAndView getEditPage(){
-        return new ModelAndView("noteCreate");
+    //TODO changed ModelAndView on String; added parameter NoteDto; return
+    public String getEditPage(){
+        return "noteCreate";
     }
 
     @PostMapping(value = "/create")
     //TODO added Note note, BindingResult result as parameters
     public String createNewNote(NoteDto noteDto, HttpServletRequest request){
-        NoteDto newNoteDto = new NoteDto();
-        newNoteDto.setTitle(noteDto.getTitle());
-        newNoteDto.setContent(noteDto.getContent());
-        newNoteDto.setAccess(Access.PRIVATE);
-        Long userId = userRepository.findUserByUsername(SecurityContextHolder.getContext()
-                .getAuthentication().getName()).getId();
-        noteService.add(newNoteDto, userId);
+        Long user_id = userService.getUserId();
+        noteService.add(noteDto, user_id);
         return "redirect:/note/list";
     }
 
@@ -60,13 +57,14 @@ public class NoteController {
     }
 
     @PostMapping(value = "/edit/{id}")
-    public String editNote(@PathVariable Long id, Long user_id, HttpServletRequest request){
+    public String editNote(@PathVariable Long id, NoteDto noteDto, HttpServletRequest request){
         String title = request.getParameter("title");
         String content = request.getParameter("content");
+        Long user_id = Long.parseLong(request.getParameter("user_id"));
+        User user = userService.getUserById(user_id);
         Access access = Access.valueOf(request.getParameter("access"));
-//        Access access = Access.valueOf("PRIVATE");
-        //TODO to finish at morning user_id(user_id)
-        noteService.update(Note.builder().id(id).title(title).content(content).access(access).build());
+        noteService.update(Note.builder().id(id).title(title)
+                .content(content).access(access).user(user).build());
         return "redirect:/note/list";
     }
 
