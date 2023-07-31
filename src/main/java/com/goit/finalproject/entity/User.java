@@ -1,6 +1,7 @@
 package com.goit.finalproject.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.security.core.GrantedAuthority;
@@ -31,6 +32,7 @@ public class User implements UserDetails {
     @Length(max = 250, message = "Password too big!")
     private String password;
 
+//    @NotNull
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_role",
