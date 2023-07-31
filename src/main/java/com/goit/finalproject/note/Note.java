@@ -3,14 +3,13 @@ package com.goit.finalproject.note;
 import com.goit.finalproject.access.Access;
 import com.goit.finalproject.user.User;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.validation.constraints.NotNull;
+import lombok.*;
 import org.hibernate.validator.constraints.Length;
 
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -29,7 +28,8 @@ public class Note {
     @Enumerated(EnumType.STRING)
     private Access access;
 
+    @NotNull
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id") //TODO added nullable=false (, nullable = false)
     private User user;
 }

@@ -7,11 +7,11 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring")
-@Component
+//@Mapper(componentModel = "spring") //TODO commented
+//@Component //TODO commented
 public interface MapStructMapper {
-    List<NoteDto> mapEntityToDto(List<Note> note);
-    NoteDto mapEntityToDto(Note note);
-    Note mapDtoToEntity(NoteDto noteDto);
-    UserDto userToUserDto(User person);
+//    List<NoteDto> mapEntityToDto(List<Note> note);
+//    NoteDto mapEntityToDto(Note note);
+//    Note mapDtoToEntity(NoteDto noteDto);
+//    UserDto userToUserDto(User person);
 }
