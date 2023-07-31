@@ -1,26 +1,43 @@
 package com.goit.finalproject.note;
 
+import com.goit.finalproject.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
 public class NoteService {
 
     private final NoteRepository noteRepository;
-    private final MapStructMapper noteMapper;
+    private final NoteMapper noteMapper;
+    private final UserService userService;
 
-    public List<NoteDto> listAll() {
+    public List<NoteDto> listAllUsersNotes() {
         List<Note> result = noteRepository.findAll();
         return noteMapper.mapEntityToDto(result);
     }
 
-    public NoteDto add(NoteDto noteDto) { //TODO нам не потрібно вертати NoteDto
+    public List<NoteDto> listAll() {
+        List<Note> allNotes = noteRepository.findAll();
+        allNotes.removeIf(note -> !Objects.equals(note.getUser().getId(),
+                userService.getUserId()));
+        return noteMapper.mapEntityToDto(allNotes);
+    }
+
+    public void add(NoteDto noteDto, Long userId) {
+        if (noteDto.getUser_id() == null) {
+            if (userId != null) {
+                noteDto.setUser_id(userId);
+            }
+            else {
+                noteDto.setUser_id(userService.getUserId());
+            }
+        }
         Note note = noteMapper.mapDtoToEntity(noteDto);
         noteRepository.save(note);
-        return noteDto;
     }
 
     public void deleteById(Long id) {
@@ -32,17 +49,10 @@ public class NoteService {
     }
 
     public Note findNoteById(Long id) { //TODO треба повертати помилку а не null
-        return noteRepository.findById(id).orElse(null);
+        return noteRepository.findById(id).orElseThrow();
     }
 
-    public NoteDto getById(Long id) { //TODO треба повертати помилку
-        return noteMapper.mapEntityToDto(noteRepository.findById(id)
-                .orElse(new Note()));
+    public NoteDto getById(Long id) {
+        return noteMapper.mapEntityToDto(noteRepository.findById(id).orElseThrow());
     }
-
-    public void updateFromDto(NoteDto noteDto) { //TODO треба прибрати у нас є метод add
-        Note note = noteMapper.mapDtoToEntity(noteDto);
-        noteRepository.save(note);
-    }
-
 }

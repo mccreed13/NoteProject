@@ -3,6 +3,7 @@ package com.goit.finalproject.security;
 import com.goit.finalproject.role.RoleRepository;
 import com.goit.finalproject.user.User;
 import com.goit.finalproject.user.UserRepository;
+import com.goit.finalproject.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -17,6 +18,7 @@ import org.springframework.web.servlet.view.RedirectView;
 public class SecurityController {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+    private final UserService userService;
 
     @GetMapping("/login")
     public ModelAndView getLoginPage() {
@@ -33,22 +35,21 @@ public class SecurityController {
             @RequestParam(value = "username") String username,
             @RequestParam(value = "password") String password
     ) {
-       User user = userRepository.findUserByUsername(username)
-                .orElse(null);
-
-       if(user != null ) {
+        //TODO потрібно додати повідомлення що юзер за таким ім'ям існує
+        //TODO якщо паролі не співпадають робити редірект на /register
+       if(userRepository.findUserByUsername(username) != null ) {
            return new RedirectView("/note/login");
        }
 
-        user = User.builder()
+       User user = User.builder()
                 .username(username)
-                .password(new BCryptPasswordEncoder().encode(password))
-                .role(roleRepository.findRoleByRole("USER"))
+                .password(password)
                 .build();
 
-        userRepository.save(new User());
+        userService.createUser(user);
+        userRepository.save(user);
 
-        return new RedirectView("/note/login");
+        return new RedirectView("/note/list");
     }
 
 }

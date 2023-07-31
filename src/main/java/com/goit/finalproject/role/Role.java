@@ -8,7 +8,8 @@ import org.springframework.security.core.GrantedAuthority;
 import java.util.List;
 
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -22,7 +23,7 @@ public class Role implements GrantedAuthority {
 
     private String role;
 
-    @ManyToMany(mappedBy = "role", cascade = CascadeType.PERSIST)
+    @ManyToMany(mappedBy = "roles", cascade = CascadeType.PERSIST)
     private List<User> userList;
 
     @Override

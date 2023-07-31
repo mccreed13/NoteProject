@@ -14,8 +14,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
@@ -24,17 +22,18 @@ import org.springframework.security.web.SecurityFilterChain;
 @RequiredArgsConstructor
 public class SecurityConfiguration{
     private final UserService userService;
+    private final PasswordEncoderProvider passwordEncoder;
 
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setUserDetailsService(userService);
-        provider.setPasswordEncoder(encoder());
+        provider.setPasswordEncoder(passwordEncoder.passwordEncoder());
          return provider;
     }
 
     @Autowired
-    public void configure(AuthenticationManagerBuilder auth) throws Exception {
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userService);
     }
 
@@ -45,13 +44,14 @@ public class SecurityConfiguration{
                 .csrf(Customizer.withDefaults())
                 .authorizeHttpRequests(authorize -> {
                     authorize.requestMatchers(
-                                    "/h2-console/**",
                                     "/note/list",
                                     "/register",
                                     "/note/create",
                                     "/note/edit/**"
                             )
                             .permitAll()
+
+                            .requestMatchers("/h2-console/**").hasAnyRole("ADMIN")
                             .anyRequest()
                             .authenticated();
                 })
@@ -66,11 +66,6 @@ public class SecurityConfiguration{
                 )
                 .logout(LogoutConfigurer::permitAll)
                 .build();
-    }
-
-    @Bean
-    public PasswordEncoder encoder() {
-        return new BCryptPasswordEncoder();
     }
 }
 
