@@ -1,4 +1,4 @@
-package com.goit.finalproject.service;
+package com.goit.finalproject;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
