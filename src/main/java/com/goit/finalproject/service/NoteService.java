@@ -3,7 +3,6 @@ package com.goit.finalproject.service;
 import com.goit.finalproject.dto.NoteDto;
 import com.goit.finalproject.entity.Note;
 import com.goit.finalproject.repository.NoteRepository;
-import com.goit.finalproject.service.plug.NoteMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -29,11 +28,16 @@ public class NoteService {
         return noteMapper.mapEntityToDto(allNotes);
     }
 
-    public void add(NoteDto noteDto, Long userId) { //TODO нам не потрібно вертати NoteDto
-        noteDto.setUser_id(userId);
+    public void add(NoteDto noteDto, Long userId) {
+        if (noteDto.getUser_id() == null) {
+            if (userId != null) {
+                noteDto.setUser_id(userId);
+            }
+            else {
+                noteDto.setUser_id(userService.getUserId());
+            }
+        }
         Note note = noteMapper.mapDtoToEntity(noteDto);
-//        note.setUser(noteRepository.findById(userId).orElseThrow().getUser());
-
         noteRepository.save(note);
     }
 
@@ -49,9 +53,7 @@ public class NoteService {
         return noteRepository.findById(id).orElseThrow();
     }
 
-    public NoteDto getById(Long id) { //TODO треба повертати помилку
-        return noteMapper.mapEntityToDto(noteRepository.findById(id)
-                .orElse(new Note()));
+    public NoteDto getById(Long id) {
+        return noteMapper.mapEntityToDto(noteRepository.findById(id).orElseThrow());
     }
-
 }
