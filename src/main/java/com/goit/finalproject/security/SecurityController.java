@@ -19,6 +19,11 @@ public class SecurityController {
         return new ModelAndView("/registration");
     }
 
+    @GetMapping("/")
+    public String getPage() {
+        return "redirect:/note/list";
+    }
+
 //    @PostMapping("/register")
 //    public
 
