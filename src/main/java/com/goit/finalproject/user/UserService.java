@@ -38,7 +38,7 @@ public class UserService implements UserDetailsService {
         userRepository.save(user);
     }
 
-    public List<User> findAll() {
+    public List<User> findAll() { //TODO а для чого це ?
         return userRepository.findAll();
     }
 

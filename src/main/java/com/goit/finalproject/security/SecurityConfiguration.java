@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -21,6 +22,15 @@ import org.springframework.security.web.SecurityFilterChain;
 @RequiredArgsConstructor
 public class SecurityConfiguration{
     private final UserService userService;
+    private final PasswordEncoderProvider passwordEncoder;
+
+    @Bean
+    public DaoAuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        provider.setUserDetailsService(userService);
+        provider.setPasswordEncoder(passwordEncoder.passwordEncoder());
+         return provider;
+    }
 
     @Autowired
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -34,14 +44,14 @@ public class SecurityConfiguration{
                 .csrf(Customizer.withDefaults())
                 .authorizeHttpRequests(authorize -> {
                     authorize.requestMatchers(
-                                    "/h2-console/**",
                                     "/note/list",
+                                    "/register",
                                     "/note/create",
                                     "/note/edit/**"
                             )
-                            .fullyAuthenticated()
-                            .requestMatchers("/register")
                             .permitAll()
+
+                            .requestMatchers("/h2-console/**").hasAnyRole("ADMIN")
                             .anyRequest()
                             .authenticated();
                 })

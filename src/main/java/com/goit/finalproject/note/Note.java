@@ -30,7 +30,7 @@ public class Note {
     private Access access;
 
     @NotNull
-    @ManyToOne
+    @ManyToOne(optional = false)
     @JoinColumn(name = "user_id") //TODO added nullable=false (, nullable = false)
     private User user;
 }
