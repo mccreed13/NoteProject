@@ -25,7 +25,7 @@ public class NoteController {
 
     @GetMapping(value = "/list")
     public ModelAndView getListNotes() {
-        ModelAndView result = new ModelAndView("noteslist");
+        ModelAndView result = new ModelAndView("notesList");
         List<NoteDto> notes = noteService.listAll();
         result.addObject("notes", notes);
         return result;

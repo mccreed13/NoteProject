@@ -2,6 +2,7 @@ package com.goit.finalproject.note;
 
 import com.goit.finalproject.access.Access;
 import com.goit.finalproject.user.UserService;
+import com.goit.finalproject.validation.Validator;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -38,6 +39,7 @@ public class NoteService {
                 noteDto.setUser_id(userService.getUserId());
             }
         }
+        Validator.validateNoteDto(noteDto);
         Note note = noteMapper.mapDtoToEntity(noteDto);
         noteRepository.save(note);
     }
@@ -46,11 +48,12 @@ public class NoteService {
         noteRepository.deleteById(id);
     }
 
-    public void update(Note note) { //TODO зробити перевірку на існування Note і кидати помилку
+    public void update(Note note) {
+        Validator.validateNote(note);
         noteRepository.save(note);
     }
 
-    public Note findNoteById(Long id) { //TODO треба повертати помилку а не null
+    public Note findNoteById(Long id) {
         return noteRepository.findById(id).orElseThrow();
     }
 
