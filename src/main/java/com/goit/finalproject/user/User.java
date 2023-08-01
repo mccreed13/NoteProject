@@ -1,7 +1,7 @@
 package com.goit.finalproject.user;
 
-import com.goit.finalproject.role.Role;
 import com.goit.finalproject.note.Note;
+import com.goit.finalproject.role.Role;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -10,7 +10,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -33,7 +32,7 @@ public class User implements UserDetails {
     private String username;
 
     @NotNull(message = "Enter password!")
-    @Length(max = 250, message = "Password too big!")
+    @Length(min = 8, max = 100, message = "Password must be between 8 and 100 characters!")
     private String password;
 
     @ManyToMany(fetch = FetchType.EAGER)
