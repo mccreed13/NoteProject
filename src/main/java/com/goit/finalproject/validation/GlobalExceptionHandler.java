@@ -31,7 +31,7 @@ public class GlobalExceptionHandler {
     public ModelAndView handleValidateException(HttpServletRequest req, Exception ex) {
         ModelAndView mav = new ModelAndView();
         mav.addObject("errorMessage", ex.getMessage());
-        mav.setViewName("noteError");
+        mav.setViewName("note/noteError");
         return mav;
     }
 

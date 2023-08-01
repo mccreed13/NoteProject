@@ -36,6 +36,9 @@
 <!--            list-style-type: none;-->
 <!--            padding: 0;-->
 <!--        }-->
+            .inline{
+                display: inline;
+            }
     </style>
 </head>
 
@@ -66,7 +69,7 @@
                    <td th:text="${note.title}"></td>
                    <td th:text="${note.content}"></td>
                    <td th:text="${note.access}"></td>
-                   <td>
+                   <td class="inline">
                        <a th:href="'/note/edit/' + ${note.id}" class="btn btn-sm btn-outline-dark">Edit</a>
                        <a th:href="'/note/share/' + ${note.id}" class="btn btn-sm btn-outline-dark">Share</a>
                        <form th:action="@{/note/delete/{id}(id=${note.id})}" method="POST" >

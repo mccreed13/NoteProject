@@ -26,7 +26,7 @@ public class NoteController {
 
     @GetMapping(value = "/list")
     public ModelAndView getListNotes() {
-        ModelAndView result = new ModelAndView("notesList");
+        ModelAndView result = new ModelAndView("note/notesList");
         List<NoteDto> notes = noteService.listAll();
         result.addObject("notes", notes);
         return result;
@@ -34,7 +34,7 @@ public class NoteController {
 
     @GetMapping(value = "/create")
     public ModelAndView getEditPage(){
-        return new ModelAndView("noteCreate");
+        return new ModelAndView("note/noteCreate");
     }
 
     @PostMapping(value = "/create")
@@ -51,7 +51,7 @@ public class NoteController {
 
     @GetMapping(value = "/edit/{id}")
     public ModelAndView getEditPage(@PathVariable Long id){
-        ModelAndView result = new ModelAndView("noteEdit");
+        ModelAndView result = new ModelAndView("note/noteEdit");
         NoteDto noteDto = noteService.getById(id);
         result.addObject("note", noteDto);
         result.addObject("noteAccess", noteDto.getAccess().equals(Access.PUBLIC));
@@ -68,11 +68,11 @@ public class NoteController {
     public ModelAndView getSharePage(@PathVariable Long id) {
         NoteDto noteDto = noteService.getById(id);
         if (noteDto.getAccess() == Access.PUBLIC) {
-            ModelAndView result = new ModelAndView("publicNote");
+            ModelAndView result = new ModelAndView("note/publicNote");
             result.addObject("note", noteDto);
             return result;
         } else {
-            return new ModelAndView("publicErrorNote");
+            return new ModelAndView("note/publicErrorNote");
         }
     }
 

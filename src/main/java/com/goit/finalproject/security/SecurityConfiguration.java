@@ -49,7 +49,8 @@ public class SecurityConfiguration{
                                     "/note/edit/**"
                             )
                             .fullyAuthenticated()
-                            .requestMatchers("/register")
+                            .requestMatchers("/register",
+                                    "/note/share/**")
                             .permitAll()
                             .requestMatchers("/h2-console/**").hasAnyRole("ADMIN")
                             .anyRequest()
