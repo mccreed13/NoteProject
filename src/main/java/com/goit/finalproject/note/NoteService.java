@@ -1,6 +1,9 @@
 package com.goit.finalproject.note;
 
+import com.goit.finalproject.access.Access;
 import com.goit.finalproject.user.UserService;
+import com.goit.finalproject.validation.Validator;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -36,6 +39,7 @@ public class NoteService {
                 noteDto.setUser_id(userService.getUserId());
             }
         }
+        Validator.validateNoteDto(noteDto);
         Note note = noteMapper.mapDtoToEntity(noteDto);
         noteRepository.save(note);
     }
@@ -44,15 +48,38 @@ public class NoteService {
         noteRepository.deleteById(id);
     }
 
-    public void update(Note note) { //TODO зробити перевірку на існування Note і кидати помилку
+    public void update(Note note) {
+        Validator.validateNote(note);
         noteRepository.save(note);
     }
 
-    public Note findNoteById(Long id) { //TODO треба повертати помилку а не null
+    public Note findNoteById(Long id) {
         return noteRepository.findById(id).orElseThrow();
     }
 
     public NoteDto getById(Long id) {
         return noteMapper.mapEntityToDto(noteRepository.findById(id).orElseThrow());
+    }
+
+    public void updateNoteById(Long id, HttpServletRequest request) {
+        NoteDto noteDto = getById(id);
+        String title = request.getParameter("title");
+        if (title==null || title.isEmpty()) {
+            title = noteDto.getTitle();
+        }
+        String content = request.getParameter("content");
+        if (content == null || content.isEmpty()) {
+            content = noteDto.getContent();
+        }
+        Access access;
+        String accessType = request.getParameter("access");
+        if (accessType == null) {
+            access = noteDto.getAccess();
+        } else {
+            access = Access.getAccess(accessType);
+        }
+        Long userId = userService.getUserId();
+        NoteDto updatedNote = new NoteDto(id, title, content, access, userId);
+        update(noteMapper.mapDtoToEntity(updatedNote));
     }
 }
