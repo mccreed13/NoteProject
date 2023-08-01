@@ -20,9 +20,10 @@ public class Note {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Length(max = 200, message = "title too big!")
+    @Length(max = 100, min = 5)
     private String title;
 
+    @Length(max = 10000, min = 5)
     private String content;
 
     @Enumerated(EnumType.STRING)

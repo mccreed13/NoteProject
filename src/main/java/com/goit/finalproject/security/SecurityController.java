@@ -40,7 +40,9 @@ public class SecurityController {
 
         userService.createUser(user);
         userRepository.save(user);
+
+    @GetMapping("/")
+    public String getDefaultPage() {
         return "redirect:/note/list";
     }
-
 }
