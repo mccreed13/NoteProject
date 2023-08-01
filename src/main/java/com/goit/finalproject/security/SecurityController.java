@@ -38,7 +38,7 @@ public class SecurityController {
         //TODO потрібно додати повідомлення що юзер за таким ім'ям існує
         //TODO якщо паролі не співпадають робити редірект на /register
        if(userRepository.findUserByUsername(username) != null ) {
-           return new RedirectView("/note/login");
+           return new RedirectView("/login");
        }
 
        User user = User.builder()
@@ -49,7 +49,11 @@ public class SecurityController {
         userService.createUser(user);
         userRepository.save(user);
 
-        return new RedirectView("/note/list");
+        return new RedirectView("/login");
     }
-
+    
+    @GetMapping("/")
+    public String getDefaultPage() {
+        return "redirect:/note/list";
+    }
 }

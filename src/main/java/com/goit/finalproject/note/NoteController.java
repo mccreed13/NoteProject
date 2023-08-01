@@ -53,6 +53,7 @@ public class NoteController {
         ModelAndView result = new ModelAndView("noteEdit");
         NoteDto noteDto = noteService.getById(id);
         result.addObject("note", noteDto);
+        result.addObject("noteAccess", noteDto.getAccess().equals(Access.PUBLIC));
         return result;
     }
 

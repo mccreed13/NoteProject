@@ -45,12 +45,12 @@ public class SecurityConfiguration{
                 .authorizeHttpRequests(authorize -> {
                     authorize.requestMatchers(
                                     "/note/list",
-                                    "/register",
                                     "/note/create",
                                     "/note/edit/**"
                             )
+                            .fullyAuthenticated()
+                            .requestMatchers("/register")
                             .permitAll()
-
                             .requestMatchers("/h2-console/**").hasAnyRole("ADMIN")
                             .anyRequest()
                             .authenticated();
