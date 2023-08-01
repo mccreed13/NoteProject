@@ -4,21 +4,30 @@ import com.goit.finalproject.role.RoleRepository;
 import com.goit.finalproject.user.User;
 import com.goit.finalproject.user.UserRepository;
 import com.goit.finalproject.user.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.view.RedirectView;
 
 @Controller
 @RequiredArgsConstructor
-public class SecurityController {
+public class SecurityController implements WebMvcConfigurer {
     private final UserRepository userRepository;
-    private final RoleRepository roleRepository;
     private final UserService userService;
+
+
+//    @Override
+//    public void addViewControllers(ViewControllerRegistry registry) {
+//        registry.addViewController("/register").setViewName("ownReg");
+//    }
 
     @GetMapping("/login")
     public ModelAndView getLoginPage() {
@@ -26,30 +35,33 @@ public class SecurityController {
     }
 
     @GetMapping("/register")
-    public ModelAndView getRegisterPage() {
+    public ModelAndView getRegisterPage(@ModelAttribute User user) {
         return new ModelAndView("/ownReg");
     }
 
     @PostMapping("/register")
-    public RedirectView registerUser(
-            @RequestParam(value = "username") String username,
-            @RequestParam(value = "password") String password
-    ) {
+    public String registerUser(@Valid User user, BindingResult bindingResult) {
         //TODO потрібно додати повідомлення що юзер за таким ім'ям існує
         //TODO якщо паролі не співпадають робити редірект на /register
-       if(userRepository.findUserByUsername(username) != null ) {
-           return new RedirectView("/note/login");
+
+        if(bindingResult.hasErrors()) {
+            return "redirect:/register";
+        }
+
+        if(userRepository.findUserByUsername(user.getUsername()) != null ) {
+            return "redirect:/note/login";
        }
 
-       User user = User.builder()
-                .username(username)
-                .password(password)
-                .build();
+//        user = User.builder()
+//                .username(user.getUsername())
+//                .password(user.getPassword())
+//                .build();
 
         userService.createUser(user);
         userRepository.save(user);
 
-        return new RedirectView("/note/list");
+        return "redirect:/note/list";
     }
+
 
 }

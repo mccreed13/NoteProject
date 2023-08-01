@@ -28,13 +28,14 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull(message = "Enter username!")
     @Length(min = 5, max = 50, message = "Username must be between 5 and 50 characters!")
     private String username;
 
+    @NotNull(message = "Enter password!")
     @Length(max = 250, message = "Password too big!")
     private String password;
 
-    @NotNull
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_role",
