@@ -30,16 +30,19 @@ public class SecurityController {
 
     @PostMapping("/register")
     public String registerUser(@Valid @ModelAttribute("user") User user, BindingResult bindingResult) {
-        if(bindingResult.hasErrors()) {
+        if (bindingResult.hasErrors()) {
             return "/register";
         }
         //TODO вивести повідомлення
-        if(userRepository.findUserByUsername(user.getUsername()) != null) {
+        if (userRepository.findUserByUsername(user.getUsername()) != null) {
             return "redirect:/login";
         }
 
         userService.createUser(user);
         userRepository.save(user);
+
+        return "redirect:/login";
+    }
 
     @GetMapping("/")
     public String getDefaultPage() {
