@@ -90,7 +90,7 @@
                                         <div style="color:red" id="confirmPasswordError"></div>
                                     </div>
 
-                                    <input class="btn btn-secondary" type="submit" value="Register">
+                                    <input class="btn btn-secondary" type="submit" value="Register" id="registerButton">
 
                                     <div class="text-center text-muted mt-5 mb-0">
                                         <span th:text="${errorReg} ? 'This account already exists' : 'Have already an account?'"
@@ -108,17 +108,18 @@
     </div>
 </div>
 <script>
-    function checkPasswordMatch() {
+    document.getElementById("registerButton").addEventListener("click", function (event) {
         var password = document.getElementById("password").value;
         var confirmPassword = document.getElementById("confirmPassword").value;
         var errorDiv = document.getElementById("confirmPasswordError");
 
         if (password !== confirmPassword) {
             errorDiv.textContent = "Passwords do not match";
+            event.preventDefault();
         } else {
             errorDiv.textContent = "";
         }
-    }
+    });
 </script>
 </body>
 </html>

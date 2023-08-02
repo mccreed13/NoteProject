@@ -5,13 +5,11 @@ import com.goit.finalproject.user.UserRepository;
 import com.goit.finalproject.user.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -27,16 +25,16 @@ public class SecurityController {
 
     @GetMapping("/register")
     public ModelAndView getRegisterPage() {
-        return new ModelAndView("register").addObject("user", new User());
+        return new ModelAndView("registration").addObject("user", new User());
     }
 
     @PostMapping("/register")
     public ModelAndView registerUser(@Valid @ModelAttribute("user") User user, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return new ModelAndView("/register");
+            return new ModelAndView("registration");
         }
         if (userRepository.findUserByUsername(user.getUsername()) != null) {
-            return new ModelAndView("register").addObject("errorReg", true);
+            return new ModelAndView("registration").addObject("errorReg", true);
         }
 
         userService.createUser(user);
