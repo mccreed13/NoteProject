@@ -36,8 +36,8 @@
         }
 
         input[type="submit"] {
-            background-color: #d5a6a6;
-            color: #000;
+            background-color: #151515;
+            color: #f1efef;
             padding: 10px 15px;
             border: none;
             border-radius: 5px;
@@ -46,7 +46,7 @@
         }
 
         input[type="submit"]:hover {
-            background-color: #eee;
+            background-color: #101010;
         }
     </style>
 </head>
@@ -92,10 +92,12 @@
 
                                     <input class="btn btn-secondary" type="submit" value="Register">
 
-                                    <p class="text-center text-muted mt-5 mb-0"> Have already an account?
-                                    <div>
-                                        <a th:href="@{/login}" class="fw-bold text-body"><u>Login here</u></a>
-                                    </div></p>
+                                    <div class="text-center text-muted mt-5 mb-0">
+                                        <span th:text="${errorReg} ? 'This account already exists' : 'Have already an account?'"
+                                              th:style="${errorReg} ? 'color:red' : ''"></span>
+                                        <div><a th:href="@{/login}" class="fw-bold text-body"><u>Login here</u></a>
+                                        </div>
+                                    </div>
                                 </form>
                             </div>
                         </div>
