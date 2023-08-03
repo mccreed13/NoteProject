@@ -1,6 +1,7 @@
 package com.goit.finalproject.note;
 
 import com.goit.finalproject.access.Access;
+import com.goit.finalproject.user.User;
 import com.goit.finalproject.user.UserService;
 import com.goit.finalproject.validation.Validator;
 import jakarta.servlet.http.HttpServletRequest;
@@ -24,10 +25,8 @@ public class NoteService {
     }
 
     public List<NoteDto> listAll() {
-        List<Note> allNotes = noteRepository.findAll();
-        allNotes.removeIf(note -> !Objects.equals(note.getUser().getId(),
-                userService.getUserId()));
-        return noteMapper.mapEntityToDto(allNotes);
+        User user = userService.getUserById(userService.getUserId());
+        return noteMapper.mapEntityToDto(noteRepository.findAllByUser(user));
     }
 
     public void add(NoteDto noteDto, Long userId) {

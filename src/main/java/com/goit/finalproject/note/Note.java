@@ -31,6 +31,6 @@ public class Note {
 
     @NotNull
     @ManyToOne(optional = false)
-    @JoinColumn(name = "user_id") //TODO added nullable=false (, nullable = false)
+    @JoinColumn(name = "user_id")
     private User user;
 }
