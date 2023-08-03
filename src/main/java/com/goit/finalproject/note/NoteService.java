@@ -18,11 +18,6 @@ public class NoteService {
     private final NoteMapper noteMapper;
     private final UserService userService;
 
-    public List<NoteDto> listAllUsersNotes() {
-        List<Note> result = noteRepository.findAll();
-        return noteMapper.mapEntityToDto(result);
-    }
-
     public List<NoteDto> listAll() {
         User user = userService.getUserById(userService.getUserId());
         return noteMapper.mapEntityToDto(noteRepository.findAllByUser(user));
@@ -48,10 +43,6 @@ public class NoteService {
     public void update(Note note) {
         Validator.validateNote(note);
         noteRepository.save(note);
-    }
-
-    public Note findNoteById(Long id) {
-        return noteRepository.findById(id).orElseThrow();
     }
 
     public NoteDto getById(Long id) {

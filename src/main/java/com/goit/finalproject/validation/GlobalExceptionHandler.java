@@ -16,7 +16,6 @@ public class GlobalExceptionHandler {
     public ModelAndView handleException(HttpServletRequest req, Exception ex) {
         ModelAndView mav = new ModelAndView();
 
-        // Check if user is authenticated
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String redirectUrl = (auth != null && auth.getPrincipal() instanceof UserDetails) ? "notesList.html" : "login.html";
 
