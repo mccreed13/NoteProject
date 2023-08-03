@@ -9,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -30,12 +29,12 @@ public class NoteService {
     }
 
     public void add(NoteDto noteDto, Long userId) {
-        if (noteDto.getUser_id() == null) {
+        if (noteDto.getUserId() == null) {
             if (userId != null) {
-                noteDto.setUser_id(userId);
+                noteDto.setUserId(userId);
             }
             else {
-                noteDto.setUser_id(userService.getUserId());
+                noteDto.setUserId(userService.getUserId());
             }
         }
         Validator.validateNoteDto(noteDto);

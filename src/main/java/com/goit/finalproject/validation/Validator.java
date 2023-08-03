@@ -10,7 +10,7 @@ public class Validator{
         checkTitle(noteDto.getTitle());
         checkContent(noteDto.getContent());
         checkAccess(noteDto.getAccess());
-        checkUserId(noteDto.getUser_id());
+        checkUserId(noteDto.getUserId());
     }
 
     public static void validateNote(Note note) {
