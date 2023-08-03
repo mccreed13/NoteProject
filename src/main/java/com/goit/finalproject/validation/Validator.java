@@ -4,7 +4,7 @@ import com.goit.finalproject.access.Access;
 import com.goit.finalproject.note.Note;
 import com.goit.finalproject.note.NoteDto;
 
-public class Validator{
+public class Validator {
 
     public static void validateNoteDto(NoteDto noteDto) {
         checkTitle(noteDto.getTitle());
@@ -21,31 +21,31 @@ public class Validator{
     }
 
     private static void checkTitle(String title) {
-        if(title == null || title.isEmpty()) {
+        if (title == null || title.isEmpty()) {
             throw new ValidationException("Note's title can not be empty.");
         }
-        if (title.length() > 100 || title.length()<5) {
+        if (title.length() > 100 || title.length() < 5) {
             throw new ValidationException("Note's title must have 5-100 length.");
         }
     }
 
     private static void checkContent(String content) {
-        if(content == null || content.isEmpty()) {
+        if (content == null || content.isEmpty()) {
             throw new ValidationException("Note's content can not be empty.");
         }
-        if (content.length() > 10000 || content.length()<5) {
+        if (content.length() > 10000 || content.length() < 5) {
             throw new ValidationException("Note's content must have 5-10.000 length.");
         }
     }
 
     private static void checkAccess(Access access) {
-        if(access == null) {
+        if (access == null) {
             throw new ValidationException("Note's access has to be chosen.");
         }
     }
 
     private static void checkUserId(Long userId) {
-        if (userId==null) {
+        if (userId == null) {
             throw new ValidationException("UserId can not be null");
         }
     }

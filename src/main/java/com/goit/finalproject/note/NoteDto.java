@@ -9,11 +9,11 @@ import lombok.ToString;
 @Getter
 @Setter
 public class NoteDto {
-    Long id;
-    String title;
-    String content;
-    Access access;
-    Long userId;
+    private Long id;
+    private String title;
+    private String content;
+    private Access access;
+    private Long userId;
 
     public NoteDto(Long id, String title, String content, Access access, Long userId) {
         this.id = id;
