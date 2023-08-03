@@ -14,7 +14,7 @@ public class UserDto implements UserDetails {
     private String password;
 
     @Override
-    public Collection<Role> getAuthorities() { //TODO was null before
+    public Collection<Role> getAuthorities() {
         return new HashSet<Role>(Arrays.asList(new Role()));
     }
 
