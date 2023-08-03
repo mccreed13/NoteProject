@@ -55,4 +55,3 @@ class UserServiceTest {
         return accountEntity;
     }
 }
-
