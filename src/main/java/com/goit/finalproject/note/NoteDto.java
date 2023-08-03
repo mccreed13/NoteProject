@@ -9,25 +9,25 @@ import lombok.ToString;
 @Getter
 @Setter
 public class NoteDto {
-    Long id;
-    String title;
-    String content;
-    Access access;
-    Long user_id;
+    private Long id;
+    private String title;
+    private String content;
+    private Access access;
+    private Long userId;
 
-    public NoteDto(Long id, String title, String content, Access access, Long user_id) {
+    public NoteDto(Long id, String title, String content, Access access, Long userId) {
         this.id = id;
         this.title = title;
         this.content = content;
         this.access = access;
-        this.user_id = user_id;
+        this.userId = userId;
     }
 
-    public NoteDto(String title, String content, Access access, Long user_id) {
+    public NoteDto(String title, String content, Access access, Long userId) {
         this.title = title;
         this.content = content;
         this.access = access;
-        this.user_id = user_id;
+        this.userId = userId;
     }
 
     public NoteDto() {

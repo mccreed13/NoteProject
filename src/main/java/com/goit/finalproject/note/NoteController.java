@@ -2,11 +2,13 @@ package com.goit.finalproject.note;
 
 import com.goit.finalproject.access.Access;
 import com.goit.finalproject.user.UserService;
-import com.goit.finalproject.validation.ValidationException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -33,12 +35,12 @@ public class NoteController {
     }
 
     @GetMapping(value = "/create")
-    public ModelAndView getEditPage(){
+    public ModelAndView getEditPage() {
         return new ModelAndView("note/noteCreate");
     }
 
     @PostMapping(value = "/create")
-    public String createNewNote(HttpServletRequest request){
+    public String createNewNote(HttpServletRequest request) {
         String title = request.getParameter("title");
         String content = request.getParameter("content");
         String accessType = request.getParameter("access");
@@ -50,7 +52,7 @@ public class NoteController {
     }
 
     @GetMapping(value = "/edit/{id}")
-    public ModelAndView getEditPage(@PathVariable Long id){
+    public ModelAndView getEditPage(@PathVariable Long id) {
         ModelAndView result = new ModelAndView("note/noteEdit");
         NoteDto noteDto = noteService.getById(id);
         result.addObject("note", noteDto);
@@ -59,7 +61,7 @@ public class NoteController {
     }
 
     @PostMapping(value = "/edit/{id}")
-    public String editNote(@PathVariable Long id, HttpServletRequest request){
+    public String editNote(@PathVariable Long id, HttpServletRequest request) {
         noteService.updateNoteById(id, request);
         return REDIRECT;
     }
@@ -77,7 +79,7 @@ public class NoteController {
     }
 
     @PostMapping(value = "/delete/{id}")
-    public String deleteNoteById(@PathVariable Long id){
+    public String deleteNoteById(@PathVariable Long id) {
         noteService.deleteById(id);
         return REDIRECT;
     }

@@ -23,7 +23,7 @@ public class NoteMapper implements Mapper<Note, NoteDto> {
         target.setTitle(source.getTitle());
         target.setContent(source.getContent());
         target.setAccess(source.getAccess());
-        target.setUser_id(source.getUser().getId());
+        target.setUserId(source.getUser().getId());
         return target;
     }
 
@@ -37,7 +37,7 @@ public class NoteMapper implements Mapper<Note, NoteDto> {
         target.setTitle(source.getTitle());
         target.setContent(source.getContent());
         target.setAccess(source.getAccess());
-        target.setUser(userRepository.findById(source.getUser_id()).orElseThrow());
+        target.setUser(userRepository.findById(source.getUserId()).orElseThrow());
         return target;
     }
 }

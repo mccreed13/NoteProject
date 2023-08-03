@@ -3,10 +3,10 @@ package com.goit.finalproject;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-//@SpringBootTest //TODO commented
+@SpringBootTest
 class FinalProjectApplicationTests {
 
-//    @Test //TODO commented
+    @Test
     void contextLoads() {
     }
 
