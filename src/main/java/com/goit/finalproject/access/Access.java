@@ -1,17 +1,12 @@
 package com.goit.finalproject.access;
 
+import java.util.Locale;
+
 public enum Access {
     PUBLIC,
     PRIVATE;
 
-    public static Access getAccess(String accessType) {
-        Access access = null;
-        if (accessType.equalsIgnoreCase("private")) {
-            access = Access.PRIVATE;
-        }
-        if (accessType.equalsIgnoreCase("public")) {
-            access = Access.PUBLIC;
-        }
-        return access;
+    public static Access getAccess(String accessType){
+       return Access.valueOf(accessType.toUpperCase(Locale.ROOT));
     }
 }

@@ -5,10 +5,7 @@ import com.goit.finalproject.user.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -40,13 +37,8 @@ public class NoteController {
     }
 
     @PostMapping(value = "/create")
-    public String createNewNote(HttpServletRequest request) {
-        String title = request.getParameter("title");
-        String content = request.getParameter("content");
-        String accessType = request.getParameter("access");
-        Access access = Access.getAccess(accessType);
+    public String createNewNote(@ModelAttribute NoteDto noteDto) {
         Long userId = userService.getUserId();
-        NoteDto noteDto = new NoteDto(title, content, access, userId);
         noteService.add(noteDto, userId);
         return REDIRECT;
     }
@@ -61,8 +53,8 @@ public class NoteController {
     }
 
     @PostMapping(value = "/edit/{id}")
-    public String editNote(@PathVariable Long id, HttpServletRequest request) {
-        noteService.updateNoteById(id, request);
+    public String editNote(@PathVariable Long id, @ModelAttribute NoteDto noteDto) {
+        noteService.updateNoteById(id, noteDto);
         return REDIRECT;
     }
 

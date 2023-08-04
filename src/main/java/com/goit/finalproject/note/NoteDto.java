@@ -30,6 +30,21 @@ public class NoteDto {
         this.userId = userId;
     }
 
+    public NoteDto(Long id, String title, String content, String access, Long userId) {
+        this.id = id;
+        this.title = title;
+        this.content = content;
+        this.access = Access.getAccess(access);
+        this.userId = userId;
+    }
+
+    public NoteDto(String title, String content, String access, Long userId) {
+        this.title = title;
+        this.content = content;
+        this.access = Access.getAccess(access);
+        this.userId = userId;
+    }
+
     public NoteDto() {
     }
 }

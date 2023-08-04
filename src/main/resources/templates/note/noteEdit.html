@@ -40,11 +40,11 @@
     <textarea id="noteContent" rows="5" name="content" th:text="${note.content}"></textarea>
 
     <div class="form-check form-check-inline">
-        <input class="form-check-input" type="radio" th:checked="${noteAccess ? false : true}" name="access" id="inlineRadio1" value="private">
+        <input class="form-check-input" type="radio" th:checked="${noteAccess ? false : true}" name="access" id="inlineRadio1" value="PRIVATE">
         <label class="form-check-label" for="inlineRadio1">Private</label>
     </div>
     <div class="form-check form-check-inline">
-        <input class="form-check-input" type="radio" name="access" id="inlineRadio2" th:checked="${noteAccess}" value="public">
+        <input class="form-check-input" type="radio" name="access" id="inlineRadio2" th:checked="${noteAccess}" value="PUBLIC">
         <label class="form-check-label" for="inlineRadio2">Public</label>
     </div>
 
