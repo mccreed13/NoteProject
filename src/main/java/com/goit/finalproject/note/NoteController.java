@@ -68,14 +68,19 @@ public class NoteController {
 
     @GetMapping(value = "/share/{id}")
     public ModelAndView getSharePage(@PathVariable Long id) {
-        NoteDto noteDto = noteService.getById(id);
-        if (noteDto.getAccess() == Access.PUBLIC) {
-            ModelAndView result = new ModelAndView("note/publicNote");
-            result.addObject("note", noteDto);
-            return result;
-        } else {
+        try{
+            NoteDto noteDto = noteService.getById(id);
+            if (noteDto.getAccess() == Access.PUBLIC) {
+                ModelAndView result = new ModelAndView("note/publicNote");
+                result.addObject("note", noteDto);
+                return result;
+            } else {
+                return new ModelAndView("note/publicErrorNote");
+            }
+        }catch (Exception e){
             return new ModelAndView("note/publicErrorNote");
         }
+
     }
 
     @PostMapping(value = "/delete/{id}")
