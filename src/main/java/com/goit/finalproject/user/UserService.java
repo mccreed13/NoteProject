@@ -7,7 +7,6 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -66,12 +65,12 @@ public class UserService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDto loadUserByUsername(String username) throws UsernameNotFoundException {
         User user =
                 userRepository.findUserByUsername(username);
         if (user == null) {
             throw new UsernameNotFoundException("There is no such user");
         }
-        return user;
+        return userMapper.mapEntityToDto(user);
     }
 }
