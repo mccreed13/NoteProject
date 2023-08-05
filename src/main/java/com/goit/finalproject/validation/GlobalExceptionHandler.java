@@ -1,4 +1,4 @@
-package com.goit.finalproject.controller;
+package com.goit.finalproject.validation;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
@@ -16,7 +16,6 @@ public class GlobalExceptionHandler {
     public ModelAndView handleException(HttpServletRequest req, Exception ex) {
         ModelAndView mav = new ModelAndView();
 
-        // Check if user is authenticated
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String redirectUrl = (auth != null && auth.getPrincipal() instanceof UserDetails) ? "notesList.html" : "login.html";
 
@@ -24,6 +23,14 @@ public class GlobalExceptionHandler {
         mav.addObject("errorMessage", ex.getMessage());
         mav.addObject("redirectUrl", redirectUrl);
         mav.setViewName("errorPage");
+        return mav;
+    }
+
+    @ExceptionHandler(ValidationException.class)
+    public ModelAndView handleValidateException(HttpServletRequest req, Exception ex) {
+        ModelAndView mav = new ModelAndView();
+        mav.addObject("errorMessage", ex.getMessage());
+        mav.setViewName("note/noteError");
         return mav;
     }
 

@@ -30,28 +30,28 @@
 <body>
 <h2>Edit Note</h2>
 
-<form th:action="@{/note/edit/{id}(id=${note.id})}" method="POST" class="note-form">
+<form th:action="@{/note/edit}" method="POST" class="note-form">
     <input type="hidden" name="id" th:value="${note.id}">
+    <input type="hidden" name="userId" th:value="${note.userId}">
 
     <label for="noteTitle">Note title:</label>
-    <input type="text" id="noteTitle" th:placeholder="${note.title}" name="title">
+    <input type="text" id="noteTitle" th:value="${note.title}" name="title">
 
     <label for="noteContent">Content:</label>
-    <textarea id="noteContent" th:placeholder="${note.content}" rows="5" name="content"></textarea>
+    <textarea id="noteContent" rows="5" name="content" th:text="${note.content}"></textarea>
 
     <div class="form-check form-check-inline">
-        <input class="form-check-input" type="radio" name="access" id="inlineRadio1" value="private">
+        <input class="form-check-input" type="radio" th:checked="${noteAccess ? false : true}" name="access" id="inlineRadio1" value="PRIVATE">
         <label class="form-check-label" for="inlineRadio1">Private</label>
     </div>
     <div class="form-check form-check-inline">
-        <input class="form-check-input" type="radio" name="access" id="inlineRadio2" value="public">
+        <input class="form-check-input" type="radio" name="access" id="inlineRadio2" th:checked="${noteAccess}" value="PUBLIC">
         <label class="form-check-label" for="inlineRadio2">Public</label>
     </div>
 
     <div class="buttons">
         <button type="submit" class="pure-button pure-button-primary">Save Changes</button>
         <button class="pure-button pure-button-primary" onclick="window.location.href='/note/list'">Cancel</button>
-        <a href="/note/list" class="back">Back</a>
     </div>
 </form>
 </body>

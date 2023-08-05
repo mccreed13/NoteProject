@@ -2,14 +2,20 @@ package com.goit.finalproject.note;
 
 import com.goit.finalproject.access.Access;
 import com.goit.finalproject.user.UserService;
-import jakarta.servlet.http.HttpServletRequest;
+import com.goit.finalproject.validation.ValidationException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
+@Slf4j
 @Controller
 @RequestMapping("/note")
 @RequiredArgsConstructor
@@ -25,58 +31,66 @@ public class NoteController {
 
     @GetMapping(value = "/list")
     public ModelAndView getListNotes() {
-        ModelAndView result = new ModelAndView("notesList");
+        ModelAndView result = new ModelAndView("note/notesList");
         List<NoteDto> notes = noteService.listAll();
         result.addObject("notes", notes);
         return result;
     }
 
     @GetMapping(value = "/create")
-    public ModelAndView getEditPage(){
-        return new ModelAndView("noteCreate");
+    public ModelAndView getEditPage() {
+        return new ModelAndView("note/noteCreate");
     }
 
     @PostMapping(value = "/create")
-    public String createNewNote(HttpServletRequest request){
-        String title = request.getParameter("title");
-        String content = request.getParameter("content");
-        String accessType = request.getParameter("access");
-        Access access = Access.getAccess(accessType);
+    public String createNewNote(@ModelAttribute NoteDto noteDto) {
         Long userId = userService.getUserId();
-        NoteDto noteDto = new NoteDto(title, content, access, userId);
         noteService.add(noteDto, userId);
+        log.info("{} created new note {}", userId, noteDto.getTitle());
         return REDIRECT;
     }
 
     @GetMapping(value = "/edit/{id}")
-    public ModelAndView getEditPage(@PathVariable Long id){
-        ModelAndView result = new ModelAndView("noteEdit");
+    public ModelAndView getEditPage(@PathVariable Long id) {
+        ModelAndView result = new ModelAndView("note/noteEdit");
         NoteDto noteDto = noteService.getById(id);
+        Long userId = userService.getUserId();
+        if (!userId.equals(noteDto.getUserId())) {
+            throw new ValidationException("Note is not found.");
+        }
         result.addObject("note", noteDto);
+        result.addObject("noteAccess", noteDto.getAccess().equals(Access.PUBLIC));
         return result;
     }
 
-    @PostMapping(value = "/edit/{id}")
-    public String editNote(@PathVariable Long id, HttpServletRequest request){
-        noteService.updateNoteById(id, request);
+    @PostMapping(value = "/edit")
+    public String editNote(@ModelAttribute NoteDto noteDto) {
+        noteService.updateNoteDto(noteDto);
+        log.info("{} user edited note {}", noteDto.getUserId(), noteDto.getId());
         return REDIRECT;
     }
 
     @GetMapping(value = "/share/{id}")
     public ModelAndView getSharePage(@PathVariable Long id) {
-        NoteDto noteDto = noteService.getById(id);
-        if (noteDto.getAccess() == Access.PUBLIC) {
-            ModelAndView result = new ModelAndView("publicNote");
-            result.addObject("note", noteDto);
-            return result;
-        } else {
-            return new ModelAndView("publicErrorNote");
+        try {
+            NoteDto noteDto = noteService.getById(id);
+            if (noteDto.getAccess() == Access.PUBLIC) {
+                ModelAndView result = new ModelAndView("note/publicNote");
+                result.addObject("note", noteDto);
+                return result;
+            } else {
+                return new ModelAndView("note/publicErrorNote");
+            }
+        } catch (Exception e) {
+            return new ModelAndView("note/publicErrorNote");
         }
+
     }
 
     @PostMapping(value = "/delete/{id}")
-    public String deleteNoteById(@PathVariable Long id){
+    public String deleteNoteById(@PathVariable Long id) {
         noteService.deleteById(id);
+        log.info("deleted note {}", id);
         return REDIRECT;
     }
 }

@@ -20,7 +20,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 @EnableMethodSecurity
 @RequiredArgsConstructor
-public class SecurityConfiguration{
+public class SecurityConfiguration {
     private final UserService userService;
     private final PasswordEncoderProvider passwordEncoder;
 
@@ -45,12 +45,13 @@ public class SecurityConfiguration{
                 .authorizeHttpRequests(authorize -> {
                     authorize.requestMatchers(
                                     "/note/list",
-                                    "/register",
                                     "/note/create",
                                     "/note/edit/**"
                             )
+                            .fullyAuthenticated()
+                            .requestMatchers("/register",
+                                    "/note/share/**")
                             .permitAll()
-
                             .requestMatchers("/h2-console/**").hasAnyRole("ADMIN")
                             .anyRequest()
                             .authenticated();
