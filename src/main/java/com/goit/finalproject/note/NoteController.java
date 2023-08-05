@@ -2,10 +2,13 @@ package com.goit.finalproject.note;
 
 import com.goit.finalproject.access.Access;
 import com.goit.finalproject.user.UserService;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -60,7 +63,7 @@ public class NoteController {
 
     @GetMapping(value = "/share/{id}")
     public ModelAndView getSharePage(@PathVariable Long id) {
-        try{
+        try {
             NoteDto noteDto = noteService.getById(id);
             if (noteDto.getAccess() == Access.PUBLIC) {
                 ModelAndView result = new ModelAndView("note/publicNote");
@@ -69,7 +72,7 @@ public class NoteController {
             } else {
                 return new ModelAndView("note/publicErrorNote");
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             return new ModelAndView("note/publicErrorNote");
         }
 
