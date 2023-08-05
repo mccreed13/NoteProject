@@ -11,11 +11,11 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 @AutoConfigureMockMvc(addFilters = false)
 @WebMvcTest(NoteController.class)
 class NoteControllerTest {
@@ -33,8 +33,8 @@ class NoteControllerTest {
     void getNotes() throws Exception {
         this.mockMvc
                 .perform(MockMvcRequestBuilders.get("/note/"))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/note/list"));
+                .andExpect(MockMvcResultMatchers.status().is3xxRedirection())
+                .andExpect(MockMvcResultMatchers.redirectedUrl("/note/list"));
     }
 
     @Test
@@ -42,83 +42,88 @@ class NoteControllerTest {
         Mockito.when(noteService.listAll()).thenReturn(createTestNotesList());
         this.mockMvc
                 .perform(MockMvcRequestBuilders.get("/note/list"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("note/notesList"))
-                .andExpect(model().attribute("notes", Matchers.equalTo(createTestNotesList())));
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.view().name("note/notesList"))
+                .andExpect(MockMvcResultMatchers.model().attribute("notes", Matchers.equalTo(createTestNotesList())));
     }
 
     @Test
     void createNewNote() throws Exception {
         this.mockMvc
                 .perform(MockMvcRequestBuilders.post("/note/create"))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/note/list"));
+                .andExpect(MockMvcResultMatchers.status().is3xxRedirection())
+                .andExpect(MockMvcResultMatchers.redirectedUrl("/note/list"));
     }
 
     @Test
     void getCreatePage() throws Exception {
         this.mockMvc
                 .perform(MockMvcRequestBuilders.get("/note/create"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("note/noteCreate"));
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.view().name("note/noteCreate"));
     }
 
     @Test
     void getEditPage() throws Exception {
-        NoteDto testNoteDto = createTestNotesList().get(6);
+        NoteDto testNoteDto = getTestNoteDto();
         Mockito.when(noteService.getById(5L)).thenReturn(testNoteDto);
         Mockito.when(userService.getUserId()).thenReturn(testNoteDto.getUserId());
         this.mockMvc
                 .perform(MockMvcRequestBuilders.get("/note/edit/" + 5L))
-                .andExpect(status().isOk())
-                .andExpect(view().name("note/noteEdit"))
-                .andExpect(model().attribute("note", Matchers.equalTo(testNoteDto)))
-                .andExpect(model().attribute("noteAccess", Matchers.equalTo(testNoteDto.getAccess().equals(Access.PUBLIC))));
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.view().name("note/noteEdit"))
+                .andExpect(MockMvcResultMatchers.model().attribute("note", Matchers.equalTo(testNoteDto)))
+                .andExpect(MockMvcResultMatchers.model().attribute("noteAccess", Matchers.equalTo(testNoteDto.getAccess().equals(Access.PUBLIC))));
     }
+
     @Test
     void editNote() throws Exception {
         this.mockMvc
                 .perform(MockMvcRequestBuilders.post("/note/edit"))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/note/list"));
+                .andExpect(MockMvcResultMatchers.status().is3xxRedirection())
+                .andExpect(MockMvcResultMatchers.redirectedUrl("/note/list"));
     }
 
     @Test
     void getSharePage() throws Exception {
-        NoteDto testNoteDto = createTestNotesList().get(6);
+        NoteDto testNoteDto = getTestNoteDto();
         Mockito.when(noteService.getById(5L)).thenReturn(testNoteDto);
         this.mockMvc
                 .perform(MockMvcRequestBuilders.get("/note/share/" + 5))
-                .andExpect(status().isOk())
-                .andExpect(view().name("note/publicNote"))
-                .andExpect(model().attribute("note", Matchers.equalTo(testNoteDto)));
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.view().name("note/publicNote"))
+                .andExpect(MockMvcResultMatchers.model().attribute("note", Matchers.equalTo(testNoteDto)));
     }
 
     @Test
     void getShareErrorPage() throws Exception {
-        NoteDto testNoteDto = createTestNotesList().get(6);
+        NoteDto testNoteDto = getTestNoteDto();
         testNoteDto.setAccess(Access.PRIVATE);
         Mockito.when(noteService.getById(5L)).thenReturn(testNoteDto);
         this.mockMvc
                 .perform(MockMvcRequestBuilders.get("/note/share/" + 5))
-                .andExpect(status().isOk())
-                .andExpect(view().name("note/publicErrorNote"));
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.view().name("note/publicErrorNote"));
     }
 
     @Test
     void deleteNoteById() throws Exception {
         this.mockMvc
                 .perform(MockMvcRequestBuilders.post("/note/delete/" + 5))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/note/list"));
+                .andExpect(MockMvcResultMatchers.status().is3xxRedirection())
+                .andExpect(MockMvcResultMatchers.redirectedUrl("/note/list"));
     }
 
-    private List<NoteDto> createTestNotesList(){
+    private List<NoteDto> createTestNotesList() {
         List<NoteDto> noteDtos = new ArrayList<>();
-        for (long i=0; i < 10; i++) {
+        for (long i = 0; i < 10; i++) {
             NoteDto noteDto = new NoteDto(i, "Title " + i, "Content " + i, Access.PUBLIC, 1L);
             noteDtos.add(noteDto);
         }
         return noteDtos;
+    }
+
+    private NoteDto getTestNoteDto() {
+        return createTestNotesList().get(6);
     }
 }
