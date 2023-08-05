@@ -38,7 +38,7 @@ public class NoteController {
     }
 
     @GetMapping(value = "/create")
-    public ModelAndView getEditPage() {
+    public ModelAndView getCreatePage() {
         return new ModelAndView("note/noteCreate");
     }
 
