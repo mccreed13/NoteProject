@@ -30,7 +30,7 @@
 <body>
 <h2>Edit Note</h2>
 
-<form th:action="@{/note/edit/{id}(id=${note.id})}" method="POST" class="note-form">
+<form th:action="@{/note/edit}" method="POST" class="note-form">
     <input type="hidden" name="id" th:value="${note.id}">
 
     <label for="noteTitle">Note title:</label>

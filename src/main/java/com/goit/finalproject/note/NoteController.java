@@ -2,6 +2,7 @@ package com.goit.finalproject.note;
 
 import com.goit.finalproject.access.Access;
 import com.goit.finalproject.user.UserService;
+import com.goit.finalproject.validation.ValidationException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -53,15 +54,19 @@ public class NoteController {
     public ModelAndView getEditPage(@PathVariable Long id) {
         ModelAndView result = new ModelAndView("note/noteEdit");
         NoteDto noteDto = noteService.getById(id);
+        Long userId = userService.getUserId();
+        if(!userId.equals(noteDto.getUserId())){
+            throw new ValidationException("Note is not found.");
+        }
         result.addObject("note", noteDto);
         result.addObject("noteAccess", noteDto.getAccess().equals(Access.PUBLIC));
         return result;
     }
 
-    @PostMapping(value = "/edit/{id}")
-    public String editNote(@PathVariable Long id, @ModelAttribute NoteDto noteDto) {
-        noteService.updateNoteById(id, noteDto);
-        log.info("{} user edited note {}", noteDto.getUserId(), id);
+    @PostMapping(value = "/edit")
+    public String editNote(@ModelAttribute NoteDto noteDto) {
+        noteService.updateNoteDto(noteDto);
+        log.info("{} user edited note {}", noteDto.getUserId(), noteDto.getId());
         return REDIRECT;
     }
 
