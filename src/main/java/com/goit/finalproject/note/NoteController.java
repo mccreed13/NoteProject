@@ -2,7 +2,9 @@ package com.goit.finalproject.note;
 
 import com.goit.finalproject.access.Access;
 import com.goit.finalproject.user.UserService;
+import com.goit.finalproject.validation.ValidationException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -13,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
+@Slf4j
 @Controller
 @RequestMapping("/note")
 @RequiredArgsConstructor
@@ -43,6 +46,7 @@ public class NoteController {
     public String createNewNote(@ModelAttribute NoteDto noteDto) {
         Long userId = userService.getUserId();
         noteService.add(noteDto, userId);
+        log.info("{} created new note {}", userId, noteDto.getTitle());
         return REDIRECT;
     }
 
@@ -50,14 +54,19 @@ public class NoteController {
     public ModelAndView getEditPage(@PathVariable Long id) {
         ModelAndView result = new ModelAndView("note/noteEdit");
         NoteDto noteDto = noteService.getById(id);
+        Long userId = userService.getUserId();
+        if(!userId.equals(noteDto.getUserId())){
+            throw new ValidationException("Note is not found.");
+        }
         result.addObject("note", noteDto);
         result.addObject("noteAccess", noteDto.getAccess().equals(Access.PUBLIC));
         return result;
     }
 
-    @PostMapping(value = "/edit/{id}")
-    public String editNote(@PathVariable Long id, @ModelAttribute NoteDto noteDto) {
-        noteService.updateNoteById(id, noteDto);
+    @PostMapping(value = "/edit")
+    public String editNote(@ModelAttribute NoteDto noteDto) {
+        noteService.updateNoteDto(noteDto);
+        log.info("{} user edited note {}", noteDto.getUserId(), noteDto.getId());
         return REDIRECT;
     }
 
@@ -81,6 +90,7 @@ public class NoteController {
     @PostMapping(value = "/delete/{id}")
     public String deleteNoteById(@PathVariable Long id) {
         noteService.deleteById(id);
+        log.info("deleted note {}", id);
         return REDIRECT;
     }
 }
