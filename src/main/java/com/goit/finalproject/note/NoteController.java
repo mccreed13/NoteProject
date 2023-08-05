@@ -55,7 +55,7 @@ public class NoteController {
         ModelAndView result = new ModelAndView("note/noteEdit");
         NoteDto noteDto = noteService.getById(id);
         Long userId = userService.getUserId();
-        if(!userId.equals(noteDto.getUserId())){
+        if (!userId.equals(noteDto.getUserId())) {
             throw new ValidationException("Note is not found.");
         }
         result.addObject("note", noteDto);
