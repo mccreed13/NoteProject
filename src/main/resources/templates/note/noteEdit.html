@@ -32,6 +32,7 @@
 
 <form th:action="@{/note/edit}" method="POST" class="note-form">
     <input type="hidden" name="id" th:value="${note.id}">
+    <input type="hidden" name="userId" th:value="${note.userId}">
 
     <label for="noteTitle">Note title:</label>
     <input type="text" id="noteTitle" th:value="${note.title}" name="title">
