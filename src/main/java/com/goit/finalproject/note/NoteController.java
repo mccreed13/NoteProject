@@ -3,6 +3,7 @@ package com.goit.finalproject.note;
 import com.goit.finalproject.access.Access;
 import com.goit.finalproject.user.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -13,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
+@Slf4j
 @Controller
 @RequestMapping("/note")
 @RequiredArgsConstructor
@@ -43,6 +45,7 @@ public class NoteController {
     public String createNewNote(@ModelAttribute NoteDto noteDto) {
         Long userId = userService.getUserId();
         noteService.add(noteDto, userId);
+        log.info("{} created new note {}", userId, noteDto.getTitle());
         return REDIRECT;
     }
 
@@ -58,6 +61,7 @@ public class NoteController {
     @PostMapping(value = "/edit/{id}")
     public String editNote(@PathVariable Long id, @ModelAttribute NoteDto noteDto) {
         noteService.updateNoteById(id, noteDto);
+        log.info("{} user edited note {}", noteDto.getUserId(), id);
         return REDIRECT;
     }
 
@@ -81,6 +85,7 @@ public class NoteController {
     @PostMapping(value = "/delete/{id}")
     public String deleteNoteById(@PathVariable Long id) {
         noteService.deleteById(id);
+        log.info("deleted note {}", id);
         return REDIRECT;
     }
 }

@@ -2,6 +2,7 @@ package com.goit.finalproject.user;
 
 import com.goit.finalproject.role.RoleService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+@Slf4j
 @Controller
 @RequiredArgsConstructor
 @RequestMapping()
@@ -22,11 +24,11 @@ public class UserController {
     @Secured("ADMIN")
     @GetMapping("/users")
     public String showAllUsers(Model model) {
-        System.out.println("userService.getUsername() = " + userService.getUsername());
-        System.out.println("userService.getUserId() = " + userService.getUserId());
+        log.info("userService.getUsername() = " + userService.getUsername());
+        log.info("userService.getUserId() = " + userService.getUserId());
         User user = userService.getUserById(userService.getUserId());
-        System.out.println("roleService.getAllRoles() = " + roleService.getAllRoles());
-        System.out.println("user.getRoles() = " + user.getRoles());
+        log.info("roleService.getAllRoles() = " + roleService.getAllRoles());
+        log.info("user.getRoles() = " + user.getRoles());
         model.addAttribute("users", userService.findAll());
         return "users";
     }
