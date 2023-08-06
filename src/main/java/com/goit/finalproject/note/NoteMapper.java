@@ -1,5 +1,6 @@
 package com.goit.finalproject.note;
 
+import com.goit.finalproject.mapper.Mapper;
 import com.goit.finalproject.user.UserRepository;
 import org.springframework.stereotype.Component;
 

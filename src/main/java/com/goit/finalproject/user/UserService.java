@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -37,10 +36,6 @@ public class UserService implements UserDetailsService {
         user.setRoles(new HashSet<Role>(Collections.singletonList(userRole)));
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
-    }
-
-    public List<User> findAll() {
-        return userRepository.findAll();
     }
 
     public void updateUser(User user) {

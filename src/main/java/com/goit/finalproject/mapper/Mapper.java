@@ -1,4 +1,4 @@
-package com.goit.finalproject.note;
+package com.goit.finalproject.mapper;
 
 import java.util.List;
 import java.util.Optional;

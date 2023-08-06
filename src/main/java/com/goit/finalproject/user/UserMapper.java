@@ -1,6 +1,6 @@
 package com.goit.finalproject.user;
 
-import com.goit.finalproject.note.Mapper;
+import com.goit.finalproject.mapper.Mapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

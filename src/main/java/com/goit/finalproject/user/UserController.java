@@ -3,6 +3,7 @@ package com.goit.finalproject.user;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.ModelAndView;
 
+@Slf4j
 @Controller
 @RequiredArgsConstructor
 @Secured("ADMIN")
@@ -25,6 +27,7 @@ public class UserController {
     public ModelAndView showAllUsers(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "3") int size) {
+        log.info("show users for {}", userService.getUserId());
         return new ModelAndView()
                 .addObject("users", userRepository.findAll(PageRequest.of(page, size)));
     }
@@ -45,6 +48,7 @@ public class UserController {
         }
 
         userService.createUser(user);
+        log.info("admin {} add new user {}", userService.getUserId(), user.getUsername());
         return new ModelAndView("redirect:/users");
     }
 
@@ -64,6 +68,7 @@ public class UserController {
         }
 
         userService.updateUser(user);
+        log.info("admin {} edit user {}", userService.getUserId(), user.getUsername());
         return new ModelAndView("redirect:/users");
     }
 
