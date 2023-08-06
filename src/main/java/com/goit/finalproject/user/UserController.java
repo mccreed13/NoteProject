@@ -2,6 +2,7 @@ package com.goit.finalproject.user;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -22,7 +23,6 @@ public class UserController {
     public ModelAndView showAllUsers(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "3") int size
-    ) {
         return new ModelAndView()
                 .addObject("users", userRepository.findAll(PageRequest.of(page, size)));
     }

@@ -19,28 +19,6 @@
             padding: 2% 0;
             text-align: center;
         }
-
-        .button {
-            background-color: #ffffff;
-            border-radius: 5px;
-            color: black;
-            padding: 10px 20px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-            margin: 4px 2px;
-            cursor: pointer;
-        }
-
-        ul {
-            list-style-type: none;
-            padding: 0;
-        }
-
-        .inline {
-            display: inline;
-        }
     </style>
 </head>
 
@@ -64,26 +42,30 @@
     </div>
     <table class="table mt-5">
         <thead class="table-light">
-        <tr>
-            <th>Title</th>
-            <th>Content</th>
-            <th>Access</th>
-            <th>Action</th>
-        </tr>
+            <tr>
+                <th>Title</th>
+                <th>Content</th>
+                <th>Access</th>
+                <th colspan="3">Action</th>
+            </tr>
         </thead>
         <tbody>
-        <tr th:each="note: ${notes}">
-            <td th:text="${note.title}"></td>
-            <td th:text="${note.content}"></td>
-            <td th:text="${note.access}"></td>
-            <td class="inline">
-                <a th:href="'/note/edit/' + ${note.id}" class="btn btn-sm btn-outline-dark">Edit</a>
-                <a th:href="'/note/share/' + ${note.id}" class="btn btn-sm btn-outline-dark">Share</a>
-                <form th:action="@{/note/delete/{id}(id=${note.id})}" method="POST">
-                    <button class="btn btn-sm btn-outline-dark mt-2" type="submit">Delete</button>
-                </form>
-            </td>
-        </tr>
+            <tr th:each="note: ${notes}">
+                <td th:text="${note.title}"></td>
+                <td th:text="${note.content}"></td>
+                <td th:text="${note.access}"></td>
+                <td>
+                    <a th:href="'/note/edit/' + ${note.id}" class="btn btn-sm btn-outline-dark">Edit</a>
+                </td>
+                <td>
+                    <a th:href="'/note/share/' + ${note.id}" class="btn btn-sm btn-outline-dark">Share</a>
+                </td>
+                <td>
+                    <form th:action="@{/note/delete/{id}(id=${note.id})}" method="POST">
+                        <button class="btn btn-sm btn-outline-dark" type="submit">Delete</button>
+                    </form>
+                </td>
+            </tr>
         </tbody>
     </table>
 </div>

@@ -1,6 +1,7 @@
 package com.goit.finalproject.note;
 
 import com.goit.finalproject.access.Access;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -8,6 +9,7 @@ import lombok.ToString;
 @ToString
 @Getter
 @Setter
+@EqualsAndHashCode
 public class NoteDto {
     private Long id;
     private String title;

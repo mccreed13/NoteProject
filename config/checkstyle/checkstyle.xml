@@ -154,7 +154,7 @@
         <module name="IllegalInstantiation"/>
         <module name="InnerAssignment"/>
         <module name="MagicNumber">
-            <property name="ignoreNumbers" value="1, 5, 8, 50, 100, 10000"/>
+            <property name="ignoreNumbers" value="0, 1, 5, 6, 8, 10, 50, 100, 10000"/>
         </module>
         <module name="MissingSwitchDefault"/>
         <module name="MultipleVariableDeclarations"/>

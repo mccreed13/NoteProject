@@ -5,7 +5,6 @@ import com.goit.finalproject.user.UserService;
 import com.goit.finalproject.validation.Validator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
@@ -47,8 +46,7 @@ public class NoteService {
         return noteMapper.mapEntityToDto(noteRepository.findById(id).orElseThrow());
     }
 
-    public void updateNoteById(Long id, NoteDto note) {
-        NoteDto updatedNote = new NoteDto(id, note.getTitle(), note.getContent(), note.getAccess(), userService.getUserId());
-        update(noteMapper.mapDtoToEntity(updatedNote));
+    public void updateNoteDto(NoteDto note) {
+        update(noteMapper.mapDtoToEntity(note));
     }
 }
