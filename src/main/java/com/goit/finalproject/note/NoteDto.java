@@ -1,6 +1,7 @@
 package com.goit.finalproject.note;
 
 import com.goit.finalproject.access.Access;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -8,6 +9,7 @@ import lombok.ToString;
 @ToString
 @Getter
 @Setter
+@EqualsAndHashCode
 public class NoteDto {
     private Long id;
     private String title;
@@ -27,6 +29,21 @@ public class NoteDto {
         this.title = title;
         this.content = content;
         this.access = access;
+        this.userId = userId;
+    }
+
+    public NoteDto(Long id, String title, String content, String access, Long userId) {
+        this.id = id;
+        this.title = title;
+        this.content = content;
+        this.access = Access.getAccess(access);
+        this.userId = userId;
+    }
+
+    public NoteDto(String title, String content, String access, Long userId) {
+        this.title = title;
+        this.content = content;
+        this.access = Access.getAccess(access);
         this.userId = userId;
     }
 

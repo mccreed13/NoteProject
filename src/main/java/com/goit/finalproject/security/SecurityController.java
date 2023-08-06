@@ -38,7 +38,6 @@ public class SecurityController {
         }
 
         userService.createUser(user);
-        userRepository.save(user);
         return new ModelAndView("/login").addObject("success", true);
     }
 

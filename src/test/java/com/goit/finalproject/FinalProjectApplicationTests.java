@@ -1,11 +1,12 @@
 package com.goit.finalproject;
 
+import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 class FinalProjectApplicationTests {
 
-//    @Test
+    @Test
     void contextLoads() {
     }
 
