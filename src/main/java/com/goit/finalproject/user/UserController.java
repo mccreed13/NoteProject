@@ -28,23 +28,23 @@ public class UserController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "3") int size) {
         log.info("show users for {}", userService.getUserId());
-        return new ModelAndView()
+        return new ModelAndView("user/users")
                 .addObject("users", userRepository.findAll(PageRequest.of(page, size)));
     }
 
     @GetMapping("/user/addUser")
     public ModelAndView getAddUserPage() {
-        return new ModelAndView("add-user").addObject("user", new User());
+        return new ModelAndView("user/add-user").addObject("user", new User());
     }
 
     @PostMapping("/user/addUser")
     public ModelAndView addUser(@Valid @ModelAttribute("user") User user, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return new ModelAndView("add-user");
+            return new ModelAndView("user/add-user");
         }
 
         if (userRepository.findUserByUsername(user.getUsername()) != null) {
-            return new ModelAndView("add-user").addObject("error", true);
+            return new ModelAndView("user/add-user").addObject("error", true);
         }
 
         userService.createUser(user);
@@ -54,17 +54,17 @@ public class UserController {
 
     @GetMapping("/user/edit/{id}")
     public ModelAndView showUpdateForm(@PathVariable("id") Long id) {
-        return new ModelAndView("edit-user").addObject("user", userRepository.getReferenceById(id));
+        return new ModelAndView("user/edit-user").addObject("user", userRepository.getReferenceById(id));
     }
 
     @PostMapping("/user/edit/{id}")
     public ModelAndView updateUser(@Valid @ModelAttribute("user") User user, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return new ModelAndView("edit-user");
+            return new ModelAndView("user/edit-user");
         }
 
         if (userRepository.findUserByUsername(user.getUsername()) != null) {
-            return new ModelAndView("edit-user").addObject("error", true);
+            return new ModelAndView("user/edit-user").addObject("error", true);
         }
 
         userService.updateUser(user);

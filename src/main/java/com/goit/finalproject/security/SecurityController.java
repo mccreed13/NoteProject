@@ -20,25 +20,25 @@ public class SecurityController {
 
     @GetMapping("/login")
     public ModelAndView getLoginPage() {
-        return new ModelAndView("login");
+        return new ModelAndView("auth/login");
     }
 
     @GetMapping("/register")
     public ModelAndView getRegisterPage() {
-        return new ModelAndView("registration").addObject("user", new User());
+        return new ModelAndView("auth/registration").addObject("user", new User());
     }
 
     @PostMapping("/register")
     public ModelAndView registerUser(@Valid @ModelAttribute("user") User user, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return new ModelAndView("registration");
+            return new ModelAndView("auth/registration");
         }
         if (userRepository.findUserByUsername(user.getUsername()) != null) {
-            return new ModelAndView("registration").addObject("errorReg", true);
+            return new ModelAndView("auth/registration").addObject("errorReg", true);
         }
 
         userService.createUser(user);
-        return new ModelAndView("/login").addObject("success", true);
+        return new ModelAndView("auth/login").addObject("success", true);
     }
 
     @GetMapping("/")
