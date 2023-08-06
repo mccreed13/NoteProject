@@ -5,15 +5,9 @@ import com.goit.finalproject.role.RoleService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.security.test.context.support.WithUserDetails;
-import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestBuilders;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
@@ -22,15 +16,11 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestBuilders.formLogin;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
 @SpringBootTest
 class UserControllerTest {
     @Autowired
@@ -60,7 +50,7 @@ class UserControllerTest {
         roleService.save(userRole);
 
         User user = new User();
-        user.setUsername("user1");
+        user.setUsername("Wladyslaw");
         user.setPassword("password");
         user.setRoles(Set.of(userRole));
         userService.createUser(user);
@@ -70,7 +60,6 @@ class UserControllerTest {
                         .password("password"))
                 .andDo(print())
                 .andExpect(status().is3xxRedirection())
-//                .andExpect(view().name("/note/list"));
                 .andExpect(header().string("Location","/note/list"));
     }
 
@@ -79,14 +68,14 @@ class UserControllerTest {
         Role userRole = new Role(1L, "USER", new ArrayList<>());
         roleService.save(userRole);
 
-        User user = new User();
-        user.setUsername("user1");
-        user.setPassword("password");
-        user.setRoles(Set.of(userRole));
-        userService.createUser(user);
+        User user2 = new User();
+        user2.setUsername("Maksym");
+        user2.setPassword("password");
+        user2.setRoles(Set.of(userRole));
+        userService.createUser(user2);
 
         mvc.perform(formLogin("/login")
-                        .user(user.getUsername())
+                        .user(user2.getUsername())
                         .password("wrong_password"))
                 .andDo(print())
                 .andExpect(status().is3xxRedirection())
@@ -102,19 +91,19 @@ class UserControllerTest {
 
     @Test
     void testNotExistingUserLoginSuccessful() throws Exception {
-        User user = new User();
-        user.setUsername("user1");
-        user.setPassword("password");
+        User user3 = new User();
+        user3.setUsername("Natalia");
+        user3.setPassword("password");
         Role userRole = new Role(1L, "USER", new ArrayList<>());
         roleService.save(userRole);
 
-        user.setRoles(new HashSet<Role>(Collections.singletonList(userRole)));
-        userService.createUser(user);
+        user3.setRoles(new HashSet<Role>(Collections.singletonList(userRole)));
+        userService.createUser(user3);
 
 
         mvc.perform(formLogin("/login")
-                        .user(user.getUsername())
-                        .password(user.getPassword()))
+                        .user(user3.getUsername())
+                        .password(user3.getPassword()))
                 .andDo(print())
                 .andExpect(status().is3xxRedirection());
     }
