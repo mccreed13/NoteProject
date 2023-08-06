@@ -1,72 +1,68 @@
 package com.goit.finalproject.user;
 
-import com.goit.finalproject.role.RoleService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
-@Slf4j
 @Controller
 @RequiredArgsConstructor
-@RequestMapping()
+@Secured("ADMIN")
 public class UserController {
-
     private final UserService userService;
-    private final RoleService roleService;
+    private final UserRepository userRepository;
 
-    @Secured("ADMIN")
     @GetMapping("/users")
-    public String showAllUsers(Model model) {
-        log.info("userService.getUsername() = " + userService.getUsername());
-        log.info("userService.getUserId() = " + userService.getUserId());
-        User user = userService.getUserById(userService.getUserId());
-        log.info("roleService.getAllRoles() = " + roleService.getAllRoles());
-        log.info("user.getRoles() = " + user.getRoles());
-        model.addAttribute("users", userService.findAll());
-        return "users";
+    public ModelAndView showAllUsers(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "3") int size
+        return new ModelAndView()
+                .addObject("users", userRepository.findAll(PageRequest.of(page, size)));
     }
 
-    @Secured("ADMIN")
-    @GetMapping("/user/edit")
-    public String showAddUserForm(UserDto userDto) {
-        return "add-user";
+    @GetMapping("/user/addUser")
+    public ModelAndView getAddUserPage() {
+        return new ModelAndView("add-user").addObject("user", new User());
     }
 
-    @Secured("ADMIN")
-    @PostMapping("/user/edit")
-    public String addUser(UserDto userDto, BindingResult result) {
-        if (result.hasErrors()) {
-            return "add-user";
+    @PostMapping("/user/addUser")
+    public ModelAndView addUser(@Valid @ModelAttribute("user") User user, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return new ModelAndView("add-user");
         }
-        User user = userService.getUserMapper().mapDtoToEntity(userDto);
+
+        if (userRepository.findUserByUsername(user.getUsername()) != null) {
+            return new ModelAndView("add-user").addObject("error", true);
+        }
+
         userService.createUser(user);
-        return "redirect:/users";
+        return new ModelAndView("redirect:/users");
     }
 
-    @Secured("ADMIN")
     @GetMapping("/user/edit/{id}")
-    public String showUpdateForm(@PathVariable("id") Long id, Model model) {
-        UserDto userDto = userService.getUserMapper().mapEntityToDto(userService.getUserById(id));
-        model.addAttribute("user", userDto);
-        return "update-user";
+    public ModelAndView showUpdateForm(@PathVariable("id") Long id) {
+        return new ModelAndView("edit-user").addObject("user", userRepository.getReferenceById(id));
     }
 
-    @Secured("ADMIN")
-    @PostMapping("/user/update/{id}")
-    public String updateUser(@PathVariable("id") Long id, UserDto userDto, BindingResult result) {
-        if (result.hasErrors()) {
-            userDto.setId(id);
-            return "update-user";
+    @PostMapping("/user/edit/{id}")
+    public ModelAndView updateUser(@Valid @ModelAttribute("user") User user, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return new ModelAndView("edit-user");
         }
-        userService.updateUser(userService.getUserMapper().mapDtoToEntity(userDto));
-        return "redirect:/users";
+
+        if (userRepository.findUserByUsername(user.getUsername()) != null) {
+            return new ModelAndView("edit-user").addObject("error", true);
+        }
+
+        userService.updateUser(user);
+        return new ModelAndView("redirect:/users");
     }
 
     @GetMapping("/user/delete/{id}")
@@ -74,4 +70,5 @@ public class UserController {
         userService.deleteById(id);
         return "redirect:/users";
     }
+
 }

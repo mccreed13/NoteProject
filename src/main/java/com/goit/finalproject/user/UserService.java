@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -27,7 +28,8 @@ public class UserService implements UserDetailsService {
     private final UserMapper userMapper;
 
     public User getUserById(Long id) {
-        return userRepository.findById(id).orElseThrow();
+        return userRepository.findById(id)
+                .orElseThrow(() -> new UsernameNotFoundException("There is no such user"));
     }
 
     public void createUser(User user) {
@@ -65,12 +67,11 @@ public class UserService implements UserDetailsService {
     }
 
     @Override
-    public UserDto loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user =
-                userRepository.findUserByUsername(username);
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userRepository.findUserByUsername(username);
         if (user == null) {
             throw new UsernameNotFoundException("There is no such user");
         }
-        return userMapper.mapEntityToDto(user);
+        return user;
     }
 }

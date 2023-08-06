@@ -45,4 +45,5 @@ public class SecurityController {
     public String getDefaultPage() {
         return "redirect:/note/list";
     }
+
 }
