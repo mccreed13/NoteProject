@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 
 <head>
     <title>My Notes</title>
@@ -28,7 +29,7 @@
     <div>
         <a href="/note/create" class="btn btn-dark mx-auto">Create</a>
         <a th:href="@{/logout}" class="btn btn-dark">Logout</a>
-        <a th:href="@{/users}" th:if="${#authorization.expression('hasAnyAuthority(''ADMIN'')')}" class="btn btn-dark">Admin office</a>
+        <a th:href="@{/users}" sec:authorize="hasAnyAuthority('ADMIN')" class="btn btn-dark">Admin office</a>
     </div>
 </div>
 
@@ -38,7 +39,7 @@
     <div>
         <a href="/note/create" class="btn btn-dark">Create new note</a>
         <a th:href="@{/logout}" class="btn btn-dark">Logout</a>
-        <a th:href="@{/users}" th:if="${#authorization.expression('hasAnyAuthority(''ADMIN'')')}" class="btn btn-dark">Admin office</a>
+        <a th:href="@{/users}" sec:authorize="hasAnyAuthority('ADMIN')" class="btn btn-dark">Admin office</a>
     </div>
     <table class="table mt-5">
         <thead class="table-light">
