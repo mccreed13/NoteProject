@@ -1,57 +1,101 @@
 package com.goit.finalproject.user;
 
 import com.goit.finalproject.role.Role;
+import com.goit.finalproject.role.RoleRepository;
+import com.goit.finalproject.role.RoleService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
+import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest {
 
-    private static final String TEST_USERNAME = "test@gmail.com";
-
     @Mock
     private UserRepository userRepository;
+
+    @Spy
+    private RoleRepository roleRepository;
+
     @Mock
-    private UserMapper userMapper;
+    private RoleService roleService;
+
+    @Spy
+    private PasswordEncoder passwordEncoder;
 
     @InjectMocks
     private UserService userService;
 
     @Test
-    void loadUserByUsername() {
-    //GIVEN
-    User user = createTestAccount();
-    UserDto expectedAccount = createTestAccountDto(user);
-    //WHEN
-            Mockito.when(userRepository.findUserByUsername(TEST_USERNAME)).thenReturn(user);
-            Mockito.when(userMapper.mapEntityToDto(user)).thenReturn(expectedAccount);
-    //THEN
-    UserDto actualUserDto = userService.loadUserByUsername(TEST_USERNAME);
-    Assertions.assertEquals(expectedAccount.getUsername(), actualUserDto.getUsername());
-}
+    void testLoadUserByUsername() {
+        User user = createTestAccount();
 
-    private UserDto createTestAccountDto(User accountEntity) {
-        UserDto dto = new UserDto();
-        dto.setUsername(accountEntity.getUsername());
-        return dto;
+        Mockito.when(userRepository.findUserByUsername(user.getUsername())).thenReturn(user);
+
+        User testUser = (User) userService.loadUserByUsername(user.getUsername());
+        Assertions.assertEquals(user.getUsername(), testUser.getUsername());
+    }
+
+    @Test
+    void testGetUserById() {
+        User user = createTestAccount();
+
+        userService.createUser(user);
+
+        Mockito.when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
+        User testUser = userService.getUserById(user.getId());
+        Assertions.assertEquals(user.getUsername(), testUser.getUsername());
+    }
+
+    @Test
+    void testIncorrectGetUserById() {
+        Assertions.assertThrows(UsernameNotFoundException.class,
+                () -> userService.getUserById(100L));
+    }
+
+    @Test
+    void testCreateUser() {
+        User user = createTestAccount();
+
+        Mockito.when(roleService.getRoleByName("USER")).thenReturn(new Role());
+        Mockito.when(passwordEncoder.encode(user.getPassword())).thenReturn(user.getPassword());
+        userService.createUser(user);
+        Mockito.verify(roleService).getRoleByName("USER");
+        Mockito.verify(passwordEncoder).encode(user.getPassword());
+        Mockito.verify(userRepository).save(user);
+    }
+
+    @Test
+    void testUpdateUser() {
+        User user = createTestAccount();
+        User updateUser =  createTestNewAccount();
+        userService.updateUser(updateUser);
+
+        Assertions.assertEquals(user.getId(), updateUser.getId());
+        Assertions.assertNotEquals(user.getUsername(), updateUser.getUsername());
+        Assertions.assertNotEquals(user.getPassword(), updateUser.getPassword());
     }
 
     private User createTestAccount() {
-        User accountEntity = new User();
-        accountEntity.setId(1L);
-        accountEntity.setUsername(TEST_USERNAME);
-        accountEntity.setPassword("testPassword");
-        Role userRole = new Role(1L, "USER", new ArrayList<>());
-        accountEntity.setRoles(new HashSet<Role>(Collections.singletonList(userRole)));
-        return accountEntity;
+        return User.builder()
+                .username("username")
+                .password("testPassword")
+                .build();
     }
+
+    private User createTestNewAccount() {
+        return User.builder()
+                .username("new_username")
+                .password("new_testPassword")
+                .build();
+    }
+
 }

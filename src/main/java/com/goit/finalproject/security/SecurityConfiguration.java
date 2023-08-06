@@ -18,8 +18,8 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity
 @RequiredArgsConstructor
+@EnableMethodSecurity(securedEnabled = true)
 public class SecurityConfiguration {
     private final UserService userService;
     private final PasswordEncoderProvider passwordEncoder;
@@ -29,12 +29,12 @@ public class SecurityConfiguration {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setUserDetailsService(userService);
         provider.setPasswordEncoder(passwordEncoder.passwordEncoder());
-         return provider;
+        return provider;
     }
 
     @Autowired
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userService);
+        auth.userDetailsService(userService).passwordEncoder(passwordEncoder.passwordEncoder());
     }
 
     @Bean
@@ -49,16 +49,15 @@ public class SecurityConfiguration {
                                     "/note/edit/**"
                             )
                             .fullyAuthenticated()
-                            .requestMatchers("/register",
-                                    "/note/share/**")
-                            .permitAll()
-                            .requestMatchers("/h2-console/**").hasAnyRole("ADMIN")
+                            .requestMatchers("/register", "/note/share/**").permitAll()
+                            .requestMatchers("/users/**").hasAnyAuthority("ADMIN")
+                            .requestMatchers("/user/addUser").hasAnyAuthority("ADMIN")
+                            .requestMatchers("/user/edit/**").hasAnyAuthority("ADMIN")
+                            .requestMatchers("/user/delete/**").hasAnyAuthority("ADMIN")
                             .anyRequest()
                             .authenticated();
                 })
-                .headers(headers -> headers
-                        .frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin)
-                )
+                .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))
                 .csrf(CsrfConfigurer::disable)
                 .formLogin(login ->
                     login.loginPage("/login")
@@ -68,5 +67,5 @@ public class SecurityConfiguration {
                 .logout(LogoutConfigurer::permitAll)
                 .build();
     }
-}
 
+}
