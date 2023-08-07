@@ -20,6 +20,12 @@ public class Validator {
         checkUserId(note.getUser().getId());
     }
 
+    public static void validateUserId(Long userId, Long noteDtoUserId) {
+        if (!userId.equals(noteDtoUserId)) {
+            throw new ValidationException("Note is not found.");
+        }
+    }
+
     private static void checkTitle(String title) {
         if (title == null || title.isEmpty()) {
             throw new ValidationException("Note's title can not be empty.");
