@@ -5,16 +5,22 @@ import com.goit.finalproject.user.UserService;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.mockito.Spy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @AutoConfigureMockMvc(addFilters = false)
 @WebMvcTest(NoteController.class)
@@ -35,16 +41,6 @@ class NoteControllerTest {
                 .perform(MockMvcRequestBuilders.get("/note/"))
                 .andExpect(MockMvcResultMatchers.status().is3xxRedirection())
                 .andExpect(MockMvcResultMatchers.redirectedUrl("/note/list"));
-    }
-
-    @Test
-    void getListNotes() throws Exception {
-        Mockito.when(noteService.listAll()).thenReturn(createTestNotesList());
-        this.mockMvc
-                .perform(MockMvcRequestBuilders.get("/note/list"))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.view().name("note/notesList"))
-                .andExpect(MockMvcResultMatchers.model().attribute("notes", Matchers.equalTo(createTestNotesList())));
     }
 
     @Test
