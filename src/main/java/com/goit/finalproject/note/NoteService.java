@@ -43,7 +43,10 @@ public class NoteService {
     }
 
     public NoteDto getById(Long id) {
-        return noteMapper.mapEntityToDto(noteRepository.findById(id).orElseThrow());
+        Note note = noteRepository.findById(id).orElseThrow();
+        NoteDto noteDto = noteMapper.mapEntityToDto(note);
+        Validator.validateUserId(userService.getUserId(), noteDto.getUserId());
+        return noteDto;
     }
 
     public void updateNoteDto(NoteDto note) {
