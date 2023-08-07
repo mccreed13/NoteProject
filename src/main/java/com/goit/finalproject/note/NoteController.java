@@ -2,7 +2,6 @@ package com.goit.finalproject.note;
 
 import com.goit.finalproject.access.Access;
 import com.goit.finalproject.user.UserService;
-import com.goit.finalproject.validation.ValidationException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
@@ -60,10 +59,6 @@ public class NoteController {
     public ModelAndView getEditPage(@PathVariable Long id) {
         ModelAndView result = new ModelAndView("note/noteEdit");
         NoteDto noteDto = noteService.getById(id);
-        Long userId = userService.getUserId();
-        if (!userId.equals(noteDto.getUserId())) {
-            throw new ValidationException("Note is not found.");
-        }
         result.addObject("note", noteDto);
         result.addObject("noteAccess", noteDto.getAccess().equals(Access.PUBLIC));
         return result;

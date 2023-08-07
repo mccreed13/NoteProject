@@ -5,6 +5,8 @@ import com.goit.finalproject.role.RoleRepository;
 import com.goit.finalproject.role.RoleService;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -26,9 +28,17 @@ public class UserService implements UserDetailsService {
     private final PasswordEncoder passwordEncoder;
     private final UserMapper userMapper;
 
+    public Page<User> listAll(Pageable pageable) {
+        return userRepository.findAll(pageable);
+    }
+
     public User getUserById(Long id) {
         return userRepository.findById(id)
                 .orElseThrow(() -> new UsernameNotFoundException("There is no such user"));
+    }
+
+    public User getReferenceById(Long id) {
+        return userRepository.getReferenceById(id);
     }
 
     public void createUser(User user) {
@@ -68,5 +78,9 @@ public class UserService implements UserDetailsService {
             throw new UsernameNotFoundException("There is no such user");
         }
         return user;
+    }
+
+    public User findUserByUsername(String username) {
+        return userRepository.findUserByUsername(username);
     }
 }
