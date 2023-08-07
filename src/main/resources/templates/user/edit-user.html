@@ -8,10 +8,6 @@
   <body>
     <form action="#" th:action="@{/user/edit/{id}(id=${user.id})}" th:object="${user}" method="post">
 
-      <div style="color:red" th:if="${error}">
-        <label>This account already exists</label>
-      </div>
-
       <div class="form-group">
         <i class="input-icon uil uil-user"></i>
         <input type="text" th:field="*{username}" class="form-style" name="username"

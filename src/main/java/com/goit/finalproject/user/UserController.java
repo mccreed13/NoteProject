@@ -26,7 +26,7 @@ public class UserController {
     @GetMapping("/users")
     public ModelAndView showAllUsers(
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "3") int size) {
+            @RequestParam(defaultValue = "10") int size) {
         log.info("show users for {}", userService.getUserId());
         return new ModelAndView("user/users")
                 .addObject("users", userRepository.findAll(PageRequest.of(page, size)));
@@ -61,10 +61,6 @@ public class UserController {
     public ModelAndView updateUser(@Valid @ModelAttribute("user") User user, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return new ModelAndView("user/edit-user");
-        }
-
-        if (userRepository.findUserByUsername(user.getUsername()) != null) {
-            return new ModelAndView("user/edit-user").addObject("error", true);
         }
 
         userService.updateUser(user);
