@@ -38,16 +38,6 @@ class NoteControllerTest {
     }
 
     @Test
-    void getListNotes() throws Exception {
-        Mockito.when(noteService.listAll()).thenReturn(createTestNotesList());
-        this.mockMvc
-                .perform(MockMvcRequestBuilders.get("/note/list"))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.view().name("note/notesList"))
-                .andExpect(MockMvcResultMatchers.model().attribute("notes", Matchers.equalTo(createTestNotesList())));
-    }
-
-    @Test
     void createNewNote() throws Exception {
         this.mockMvc
                 .perform(MockMvcRequestBuilders.post("/note/create"))

@@ -5,12 +5,14 @@ import com.goit.finalproject.user.UserService;
 import com.goit.finalproject.validation.ValidationException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -30,10 +32,14 @@ public class NoteController {
     }
 
     @GetMapping(value = "/list")
-    public ModelAndView getListNotes() {
+    public ModelAndView getListNotes(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size
+    ) {
         ModelAndView result = new ModelAndView("note/notesList");
         List<NoteDto> notes = noteService.listAll();
-        result.addObject("notes", notes);
+        result.addObject("notes",
+                noteService.getPageNoteDto(notes, PageRequest.of(page, size)));
         return result;
     }
 
