@@ -61,11 +61,9 @@ public class UserController {
         if (bindingResult.hasErrors()) {
             return new ModelAndView("user/edit-user");
         }
-      
         if (userService.findUserByUsername(user.getUsername()) != null) {
             return new ModelAndView("user/edit-user").addObject("error", true);
         }
-
         userService.updateUser(user);
         log.info("admin {} edit user {}", userService.getUserId(), user.getUsername());
         return new ModelAndView("redirect:/users");
