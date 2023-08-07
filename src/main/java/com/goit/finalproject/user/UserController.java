@@ -25,7 +25,7 @@ public class UserController {
     @GetMapping("/users")
     public ModelAndView showAllUsers(
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "3") int size) {
+            @RequestParam(defaultValue = "10") int size) {
         log.info("show users for {}", userService.getUserId());
         return new ModelAndView("user/users")
                 .addObject("users", userService.listAll(PageRequest.of(page, size)));
@@ -61,7 +61,7 @@ public class UserController {
         if (bindingResult.hasErrors()) {
             return new ModelAndView("user/edit-user");
         }
-
+      
         if (userService.findUserByUsername(user.getUsername()) != null) {
             return new ModelAndView("user/edit-user").addObject("error", true);
         }
