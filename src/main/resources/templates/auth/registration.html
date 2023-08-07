@@ -88,6 +88,7 @@
                                         <input type="password" class="form-style" id="confirmPassword"
                                                placeholder="Confirm Password" required oninput="checkPasswordMatch()"/>
                                         <div style="color:red" id="confirmPasswordError"></div>
+                                        <span><input type="checkbox" onclick="myFunction()">Show password</span>
                                     </div>
 
                                     <input class="btn btn-secondary" type="submit" value="Register" id="registerButton">
@@ -120,6 +121,18 @@
             errorDiv.textContent = "";
         }
     });
+
+    function myFunction() {
+        var x = document.getElementById("password");
+        var y = document.getElementById("confirmPassword")
+        if (x.type === "password") {
+            x.type = "text";
+            y.type = "text";
+        } else {
+            x.type = "password";
+            y.type = "password";
+        }
+    }
 </script>
 </body>
 </html>
