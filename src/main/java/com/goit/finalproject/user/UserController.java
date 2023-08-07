@@ -21,7 +21,6 @@ import org.springframework.web.servlet.ModelAndView;
 @Secured("ADMIN")
 public class UserController {
     private final UserService userService;
-    private final UserRepository userRepository;
 
     @GetMapping("/users")
     public ModelAndView showAllUsers(
@@ -29,7 +28,7 @@ public class UserController {
             @RequestParam(defaultValue = "3") int size) {
         log.info("show users for {}", userService.getUserId());
         return new ModelAndView("user/users")
-                .addObject("users", userRepository.findAll(PageRequest.of(page, size)));
+                .addObject("users", userService.listAll(PageRequest.of(page, size)));
     }
 
     @GetMapping("/user/addUser")
@@ -43,7 +42,7 @@ public class UserController {
             return new ModelAndView("user/add-user");
         }
 
-        if (userRepository.findUserByUsername(user.getUsername()) != null) {
+        if (userService.findUserByUsername(user.getUsername()) != null) {
             return new ModelAndView("user/add-user").addObject("error", true);
         }
 
@@ -54,7 +53,7 @@ public class UserController {
 
     @GetMapping("/user/edit/{id}")
     public ModelAndView showUpdateForm(@PathVariable("id") Long id) {
-        return new ModelAndView("user/edit-user").addObject("user", userRepository.getReferenceById(id));
+        return new ModelAndView("user/edit-user").addObject("user", userService.getReferenceById(id));
     }
 
     @PostMapping("/user/edit/{id}")
@@ -63,7 +62,7 @@ public class UserController {
             return new ModelAndView("user/edit-user");
         }
 
-        if (userRepository.findUserByUsername(user.getUsername()) != null) {
+        if (userService.findUserByUsername(user.getUsername()) != null) {
             return new ModelAndView("user/edit-user").addObject("error", true);
         }
 
