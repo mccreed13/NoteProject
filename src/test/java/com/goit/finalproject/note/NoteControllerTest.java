@@ -77,7 +77,7 @@ class NoteControllerTest {
     @Test
     void getSharePage() throws Exception {
         NoteDto testNoteDto = getTestNoteDto();
-        Mockito.when(noteService.getById(5L)).thenReturn(testNoteDto);
+        Mockito.when(noteService.getShareNoteDto(5L)).thenReturn(testNoteDto);
         this.mockMvc
                 .perform(MockMvcRequestBuilders.get("/note/share/" + 5))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -89,7 +89,7 @@ class NoteControllerTest {
     void getShareErrorPage() throws Exception {
         NoteDto testNoteDto = getTestNoteDto();
         testNoteDto.setAccess(Access.PRIVATE);
-        Mockito.when(noteService.getById(5L)).thenReturn(testNoteDto);
+        Mockito.when(noteService.getShareNoteDto(5L)).thenReturn(testNoteDto);
         this.mockMvc
                 .perform(MockMvcRequestBuilders.get("/note/share/" + 5))
                 .andExpect(MockMvcResultMatchers.status().isOk())
