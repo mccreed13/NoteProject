@@ -63,6 +63,11 @@ public class NoteService {
         return noteDto;
     }
 
+    public NoteDto getShareNoteDto(Long id) {
+        Note note = noteRepository.findById(id).orElseThrow();
+        return noteMapper.mapEntityToDto(note);
+    }
+
     public void updateNoteDto(NoteDto note) {
         update(noteMapper.mapDtoToEntity(note));
     }

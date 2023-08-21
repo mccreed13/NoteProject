@@ -39,6 +39,7 @@ public class NoteController {
         List<NoteDto> notes = noteService.listAll();
         result.addObject("notes",
                 noteService.getPageNoteDto(notes, PageRequest.of(page, size)));
+        result.addObject("noteCount", notes.size());
         return result;
     }
 
@@ -74,7 +75,7 @@ public class NoteController {
     @GetMapping(value = "/share/{id}")
     public ModelAndView getSharePage(@PathVariable Long id) {
         try {
-            NoteDto noteDto = noteService.getById(id);
+            NoteDto noteDto = noteService.getShareNoteDto(id);
             if (noteDto.getAccess() == Access.PUBLIC) {
                 ModelAndView result = new ModelAndView("note/publicNote");
                 result.addObject("note", noteDto);
