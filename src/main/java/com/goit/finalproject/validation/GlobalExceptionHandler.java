@@ -14,7 +14,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ModelAndView handleException(HttpServletRequest req, Exception ex) {
-        ModelAndView mav = new ModelAndView();
+        ModelAndView mav = new ModelAndView("errorPage");
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String redirectUrl = (auth != null && auth.getPrincipal() instanceof UserDetails) ? "notesList.html" : "login.html";
@@ -22,15 +22,13 @@ public class GlobalExceptionHandler {
         mav.addObject("errorCode", getStatus(req).value());
         mav.addObject("errorMessage", ex.getMessage());
         mav.addObject("redirectUrl", redirectUrl);
-        mav.setViewName("errorPage");
         return mav;
     }
 
     @ExceptionHandler(ValidationException.class)
     public ModelAndView handleValidateException(HttpServletRequest req, Exception ex) {
-        ModelAndView mav = new ModelAndView();
+        ModelAndView mav = new ModelAndView("note/noteError");
         mav.addObject("errorMessage", ex.getMessage());
-        mav.setViewName("note/noteError");
         return mav;
     }
 
