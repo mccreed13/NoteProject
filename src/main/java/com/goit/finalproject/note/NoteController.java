@@ -30,6 +30,11 @@ public class NoteController {
         return REDIRECT;
     }
 
+    @GetMapping(value = "")
+    public String getDefault() {
+        return REDIRECT;
+    }
+
     @GetMapping(value = "/list")
     public ModelAndView getListNotes(
             @RequestParam(defaultValue = "0") int page,
