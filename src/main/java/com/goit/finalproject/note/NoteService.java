@@ -58,9 +58,7 @@ public class NoteService {
 
     public NoteDto getById(Long id) {
         Note note = noteRepository.findById(id).orElseThrow();
-        NoteDto noteDto = noteMapper.mapEntityToDto(note);
-        Validator.validateUserId(userService.getUserId(), noteDto.getUserId());
-        return noteDto;
+        return noteMapper.mapEntityToDto(note);
     }
 
     public NoteDto getShareNoteDto(Long id) {
