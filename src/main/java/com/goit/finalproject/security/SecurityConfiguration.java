@@ -48,7 +48,8 @@ public class SecurityConfiguration {
                                     "/note/create",
                                     "/note/edit/**"
                             )
-                            .fullyAuthenticated()
+//                            .fullyAuthenticated()
+                            .authenticated()
                             .requestMatchers("/register", "/note/share/**").permitAll()
                             .requestMatchers("/users/**").hasAnyAuthority("ADMIN")
                             .requestMatchers("/user/addUser").hasAnyAuthority("ADMIN")
